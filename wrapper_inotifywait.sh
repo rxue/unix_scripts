@@ -3,7 +3,7 @@ print_usage() {
 	echo "Usage: ${BASH_SOURCE}	-f <path of the file to watch> -c <command or script with arguments to execute> [-l loop or not ] [-s the command is a script name ] [-t <seconds> sleep time in seconds after a successful execution ]"
 	exit 1
 }
-SEC=0
+SEC=1
 while getopts ":f:c:el:ost:" opt; do
 	case $opt in
 		f)
@@ -69,26 +69,34 @@ validate
 eval FILE="$FILE"
 #NOTE! I am not sure if the two boolean operations connected by && is atomic or not, if not this is a bug
 while true; do
-	if [ ! -f $FILE ] && inotifywait --format '%e %f : %w' $DIR || [ -f $FILE ] && inotifywait -e modify,delete_self,move_self --format '%e %f : %w' $FILE; then
-		if [ -f $FILE ]; then 
-			if [ "$SCRIPT" = true ]; then			
-				/bin/bash ${SCRIPT_CMD}
-				EXIT_CODE=$?
-				LINE_NO=$(expr ${LINENO} - 2)
-			else
-				eval "${SCRIPT_CMD}"
-				EXIT_CODE=$?
-				LINE_NO=$(expr ${LINENO} - 2)
-			fi
-			if [ $EXIT_CODE -eq 0 ]; then
-				logger INFO "COMMAND or SCRIPT - ${SCRIPT_CMD} - execution succeeded :)" $LINE_NO
-			else
-				logger ERROR "COMMAND or SCRIPT - ${SCRIPT_CMD} - execution failed :<" $LINE_NO
-			fi
-			sleep $SEC
+  # watch and wait
+	if [ ! -f $FILE ] && inotifywait --format '%e %f : %w' $DIR; then
+		EXEC=true 
+	#elif [ -f $FILE ] && inotifywait -e modify,delete_self,move_self --format '%e %f : %w' $FILE; then
+	elif [ -f $FILE ] && inotifywait --format '%e %f : %w' $FILE; then
+		EXEC=true
+	fi
+	sleep ${SEC}
+	# execute
+	if [ "$EXEC" = true -a -f $FILE ]; then 
+		if [ "$SCRIPT" = true ]; then			
+			/bin/bash ${SCRIPT_CMD}
+			EXIT_CODE=$?
+			LINE_NO=$(expr ${LINENO} - 2)
+		else
+			eval "${SCRIPT_CMD}"
+			EXIT_CODE=$?
+			LINE_NO=$(expr ${LINENO} - 2)
 		fi
-		if [ "$LOOP" != true ]; then #This true is /bin/true
-			exit $EXIT_CODE
+		if [ $EXIT_CODE -eq 0 ]; then
+			logger INFO "COMMAND or SCRIPT - ${SCRIPT_CMD} - execution succeeded :)" $LINE_NO
+		else
+			logger ERROR "COMMAND or SCRIPT - ${SCRIPT_CMD} - execution failed :<" $LINE_NO
 		fi
+	fi
+	if [ "$LOOP" != true ]; then #This true is /bin/true
+		exit $EXIT_CODE
+	elif [ "$EXEC" = true ]; then
+		EXEC=false
 	fi
 done
