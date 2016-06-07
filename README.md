@@ -11,5 +11,5 @@ There's no standard convention for the naming of shell variables, but all-caps n
 
 FAQ:
 ----
-* How to get running script directory: `$(cd `` `dirname $0` `` && pwd)`
+* How to get running script directory: <code>$(cd dirname $0 && pwd)</code>
  
