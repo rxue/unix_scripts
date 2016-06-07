@@ -7,4 +7,9 @@ When referencing a variable, surround its name with curly braces to clarify to t
 
 There's no standard convention for the naming of shell variables, but all-caps names typically suggest environment variables or variables read from global configuration files. More often than not, local variable are all-lowercase with components separated by unserscores.
 
-<sub>Ref: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 2 Scripting and the Shell > Shell basics > Variables and quoting (P/33)</sub> 
+<sub>Ref: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 2 Scripting and the Shell > Shell basics > Variables and quoting (P/33)</sub>
+
+FAQ:
+----
+* How to get running script directory: `$(cd `dirname $0` && pwd)`
+ 
