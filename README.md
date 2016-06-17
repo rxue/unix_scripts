@@ -9,6 +9,10 @@ There's no standard convention for the naming of shell variables, but all-caps n
 
 <sub>Ref: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 2 Scripting and the Shell > Shell basics > Variables and quoting (P/33)</sub>
 
+logrotate.sh
+-------------
+<b>Motivation:<b/> The existing logratate program 
+
 FAQ:
 ----
 * How to get running script directory: ``$(cd `dirname $0` && pwd)``
