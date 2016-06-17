@@ -11,7 +11,8 @@ There's no standard convention for the naming of shell variables, but all-caps n
 
 logrotate.sh
 -------------
-<b>Motivation:<b/> The existing logratate program 
+# Motivation:
+ The existing logratate program 
 
 FAQ:
 ----
