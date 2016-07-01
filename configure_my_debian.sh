@@ -11,5 +11,30 @@ locale-gen
 # install Java 8
 wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-x64.tar.gz
 ## ref: http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/usr.html 
-tar xvzf jdk-8u92-linux-x64.tar.gz -C /usr/lib
+tar xvzf jdk-8u92-linux-x64.tar.gz -C /usr/lib/jvm
 rm jdk-8u92-linux-x64.tar.gz
+ln -sf /usr/lib/jvm/jdk1.8.0_92/jre/bin/java /etc/alternatives/java 
+ln -s /usr/lib/jvm/jdk1.8.0_92 /usr/lib/jvm/java-8-jdk-amd64
+ln -sf /usr/lib/jvm/java-8-jdk-amd64 /usr/lib/jvm/default-java
+wget http://eclipse.mirror.garr.it/mirrors/eclipse//oomph/epp/neon/R/eclipse-inst-linux64.tar.gz
+tar xvzf eclipse-inst-linux64.tar.gz -C /usr/lib/
+rm eclipse-inst-linux64.tar.gz
+# Install Eclipse Che
+## Install Docker. ref: https://docs.docker.com/engine/installation/linux/debian/
+apt-get purge lxc-docker*
+apt-get purge docker.io*
+apt-get update
+apt-get install apt-transport-https ca-certificates
+apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-cache policy docker-engine
+apt-get update
+apt-get install docker-engine
+service docker start
+docker run hello-world
+user_1000=`getent passwd 1000 |cut -d':' -f1`
+runuser -l ${user_1000} -c 'wget http://ftp.fau.de/eclipse/che/eclipse-che-4.0.1.zip'
+gpasswd -a ${user_1000} docker
+chmod 777 /var/run/docker.sock
+echo "export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_92/jre" > /etc/profile.d/custom.sh
