@@ -5,7 +5,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 while ! dpkg -i google-chrome-stable_current_amd64.deb; do
   apt-get -f install
 done
-# add Chinese locale. ref: https://wiki.archlinux.org/index.php/locale
+# add ibus Chinese input method
 apt-get install ibus
 apt-get install ibus-pinyin
 gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
