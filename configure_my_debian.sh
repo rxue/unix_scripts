@@ -9,8 +9,6 @@ done
 apt-get install ibus
 apt-get install ibus-pinyin
 gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
-sed -i "s/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/" /etc/locale.gen
-locale-gen
 # install Java 8
 wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-x64.tar.gz
 ## ref: http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/usr.html 
