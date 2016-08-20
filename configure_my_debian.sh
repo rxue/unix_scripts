@@ -6,6 +6,9 @@ while ! dpkg -i google-chrome-stable_current_amd64.deb; do
   apt-get -f install
 done
 # add Chinese locale. ref: https://wiki.archlinux.org/index.php/locale
+apt-get install ibus
+apt-get install ibus-pinyin
+gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
 sed -i "s/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
 # install Java 8
