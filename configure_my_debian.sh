@@ -6,9 +6,17 @@ while ! dpkg -i google-chrome-stable_current_amd64.deb; do
   apt-get -f install
 done
 # add ibus Chinese input method
-apt-get install ibus
-apt-get install ibus-pinyin
-gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
+install_chinese_im() {
+  if [ "${1}" = "ibus" ]; then
+    apt-get install ibus
+    apt-get install ibus-pinyin
+    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
+  elif [ "${1}" = "sogoupinyin" ]; then
+    apt-get install fcitx
+    
+  fi
+}
+
 # install Java 8
 wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-x64.tar.gz
 ## ref: http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/usr.html 
