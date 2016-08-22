@@ -1,6 +1,15 @@
 #!/bin/bash
-apt-get -y install sudo
 apt-get update
+install_vim() {
+  sudo apt-get install vim
+  echo "set number" > ${HOME}/.vimrc
+  # set highlight search result
+  echo "set hlsearch" >> ${HOME}/.vimrc
+  # set indent
+  echo "set expandtab" >> ${HOME}/.vimrc
+  echo "set shifwidth=2" >> ${HOME}/.vimrc
+  echo "set softtabstop" >> ${HOME}/.vimrc
+}
 # install Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 while ! dpkg -i google-chrome-stable_current_amd64.deb; do
