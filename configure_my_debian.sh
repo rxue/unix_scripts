@@ -1,5 +1,5 @@
 #!/bin/bash
-apt-get update
+sudo apt-get update
 install_config_vim() {
   sudo apt-get install vim
   confs="set number"
