@@ -7,7 +7,7 @@ install_vim() {
   echo "set hlsearch" >> ${HOME}/.vimrc
   # set indent
   echo "set expandtab" >> ${HOME}/.vimrc
-  echo "set shifwidth=2" >> ${HOME}/.vimrc
+  echo "set shiftwidth=2" >> ${HOME}/.vimrc
   echo "set softtabstop" >> ${HOME}/.vimrc
 }
 # install Chrome
