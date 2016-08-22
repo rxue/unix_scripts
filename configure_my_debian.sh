@@ -1,5 +1,6 @@
 #!/bin/bash
 apt-get -y install sudo
+apt-get update
 # install Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 while ! dpkg -i google-chrome-stable_current_amd64.deb; do
