@@ -1,18 +1,16 @@
 #!/bin/bash
 apt-get update
-_config_vim() {
-  echo "set number" > ${1}/.vimrc
-  # set highlight search result
-  echo "set hlsearch" >> ${1}/.vimrc
-  # set indent
-  echo "set expandtab" >> ${1}/.vimrc
-  echo "set shiftwidth=2" >> ${1}/.vimrc
-  echo "set softtabstop" >> ${1}/.vimrc
-}
 install_config_vim() {
   sudo apt-get install vim
-  _config_vim ${HOME}
-  sudo -c '_config_vim /root'
+  confs="set number"
+  confs="${confs}"$'\n'"syntax on"
+  confs="${confs}"$'\n'"set hlsearch"
+  #ref: http://vim.wikia.com/wiki/Indenting_source_code
+  confs="${confs}"$'\n'"set expandtab"
+  confs="${confs}"$'\n'"set shiftwidth=2" 
+  confs="${confs}"$'\n'"set softtabstop=2" 
+  echo "${confs}" |tee ${HOME}/.vimrc
+  echo "${confs}" |sudo tee /root/.vimrc
 }
 
 # install Chrome
