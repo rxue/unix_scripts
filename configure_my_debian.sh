@@ -21,11 +21,11 @@ done
 # add ibus Chinese input method
 install_chinese_im() {
   if [ "${1}" = "ibus" ]; then
-    apt-get install ibus
-    apt-get install ibus-pinyin
-    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
+    sudo apt-get install ibus
+    sudo apt-get install ibus-pinyin
+    sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
   elif [ "${1}" = "sogoupinyin" ]; then
-    apt-get install fcitx
+    sudo apt-get install fcitx
     download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" 2>&1 |grep "^  Location" |awk '{print $2}')
     file_name=$(echo $download_address |awk "=" '{print $NF}')
   fi
