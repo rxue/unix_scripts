@@ -27,7 +27,16 @@ install_chinese_im() {
   elif [ "${1}" = "sogoupinyin" ]; then
     sudo apt-get install fcitx
     download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" 2>&1 |grep "^  Location" |awk '{print $2}')
-    file_name=$(echo $download_address |awk "=" '{print $NF}')
+    file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
+    wget $download_address -O $file_name
+    # libqt4-declarative is the dependency of sogoupinyin
+    sudo apt-get install libqt4-declarative
+    sudo apt-get -f install
+    sudo dpkg -i $file_name
+    if [ $? -eq 0 ]; then
+      rm $file_name
+    else return 1
+    fi
   fi
 }
 
