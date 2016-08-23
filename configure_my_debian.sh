@@ -74,3 +74,5 @@ runuser -l ${user_1000} -c 'wget http://ftp.fau.de/eclipse/che/eclipse-che-4.0.1
 gpasswd -a ${user_1000} docker
 chmod 777 /var/run/docker.sock
 echo "export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_92/jre" > /etc/profile.d/custom.sh
+
+for f in /etc/X11/Xsession.d/*; do source $f; done
