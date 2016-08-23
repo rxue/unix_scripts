@@ -30,7 +30,7 @@ install_chinese_im() {
   elif [ "${1}" = "sogoupinyin" ]; then
     #Set only Finnish as the input-sources
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
-    sudo apt-get install fcitx
+    sudo apt-get install fcitx fcitx-googlepinyin
     download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64"\
       2>&1 | grep "^  Location" |awk '{print $2}')
     file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
