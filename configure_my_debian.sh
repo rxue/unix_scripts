@@ -35,6 +35,7 @@ install_chinese_im() {
       2>&1 | grep "^  Location" |awk '{print $2}')
     file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
     wget $download_address -O $file_name
+    gsettings set org.gnome.settings-daemon.plugins.xsettings overrides "{'Gtk/IMModule':<'fcitx'>}"
     sudo dpkg -i $file_name
     if [ $? -ne 0]; then
       sudo apt-get install -f
