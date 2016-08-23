@@ -15,9 +15,12 @@ install_config_vim() {
 
 # install Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-while ! dpkg -i google-chrome-stable_current_amd64.deb; do
-  apt-get -f install
-done
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+if [ $? -ne 0 ]; then
+  sudo apt-get install -f
+fi
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+
 # add ibus Chinese input method
 install_chinese_im() {
   if [ "${1}" = "ibus" ]; then
@@ -28,16 +31,16 @@ install_chinese_im() {
     #Set only Finnish as the input-sources
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
     sudo apt-get install fcitx
-    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" 2>&1 |grep "^  Location" |awk '{print $2}')
+    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64"\
+      2>&1 | grep "^  Location" |awk '{print $2}')
     file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
     wget $download_address -O $file_name
-    # libqt4-declarative is the dependency of sogoupinyin
-    sudo apt-get install libqt4-declarative
     sudo dpkg -i $file_name
-    if [ $? -eq 0 ]; then
-      rm $file_name
-    else return 1
+    if [ $? -ne 0]; then
+      sudo apt-get install -f
+      sudo dpkg -i $file_name
     fi
+    rm $file_name
   fi
 }
 
