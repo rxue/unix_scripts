@@ -15,7 +15,9 @@ There's no standard convention for the naming of shell variables, but all-caps n
 Declaring a function is just a matter of writing `function my_func { my_code }`. Calling a function is just like calling another program, just write its name. 
 
 <sub>Reference: [BASH Programming - Introduction HOW-TO](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html) > [8. Functions](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-8.html)</sub>
-## Coding Introduction
+
+## Code Description
+
 ### configure_my_debian.sh
 `bash configure_my_debian.sh`
 
