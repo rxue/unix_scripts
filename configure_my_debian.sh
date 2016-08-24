@@ -2,7 +2,7 @@
 sudo apt-get update
 #Resolving the bug - "Media change: please insert the disc labeled" - when using apt to install software
 sudo sed -i '/cdrom/d' /etc/apt/sources.list
-install_config_vim() {
+function install_config_vim {
   sudo apt-get install vim
   confs="set number"
   confs="${confs}"$'\n'"syntax on"
@@ -24,7 +24,7 @@ fi
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # add ibus Chinese input method
-install_chinese_im() {
+function install_chinese_im {
   if [ "${1}" = "ibus" ]; then
     sudo apt-get install ibus
     sudo apt-get install ibus-pinyin
