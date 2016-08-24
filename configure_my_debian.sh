@@ -1,5 +1,7 @@
 #!/bin/bash
 sudo apt-get update
+#Resolving the bug - "Media change: please insert the disc labeled" - when using apt to install software
+sudo sed -i '/cdrom/d' /etc/apt/sources.list
 install_config_vim() {
   sudo apt-get install vim
   confs="set number"
