@@ -9,8 +9,12 @@ There's no standard convention for the naming of shell variables, but all-caps n
 <sub>Ref: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 2 Scripting and the Shell > Shell basics > Variables and quoting (P/33)</sub>
 
 ### configure_my_debian.sh
-\# `bash configure_my_debian.sh`
-   
+`bash configure_my_debian.sh`
+
+#### TODO
+* Command instead of logout for Xsession refresh still unsolved, `source /etc/X11/Xsession` encountered errors
+* Add keyboard shortcut 'CTRL+ALT-T' to open terminal (script instead of manual) 
+
 FAQ:
 ----
 * How to check the distribution version of your current Linux: `lsb_release -a` 
