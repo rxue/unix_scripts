@@ -1,7 +1,7 @@
 # Bash
 [Bash Beginners Guide](http://www.tldp.org/LDP/Bash-Beginners-Guide/Bash-Beginners-Guide.pdf)
 
-## Convention:
+## Coding Convention
 * Variables
 
 When referencing a variable, surround its name with curly braces to clarify to the parser and to human readers where the variable name stops and other text begins; for example, `${etcdir}` instead of just `$etcdir`
@@ -15,8 +15,10 @@ There's no standard convention for the naming of shell variables, but all-caps n
 Declaring a function is just a matter of writing `function my_func { my_code }`. Calling a function is just like calling another program, just write its name. 
 
 <sub>Reference: [BASH Programming - Introduction HOW-TO](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html) > [8. Functions](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-8.html)</sub>
+## Coding Introduction
 ### configure_my_debian.sh
 `bash configure_my_debian.sh`
+
 
 #### TODO
 * Command instead of logout for Xsession refresh still unsolved, `source /etc/X11/Xsession` encountered errors
