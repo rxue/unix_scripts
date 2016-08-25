@@ -2,7 +2,8 @@
 sudo apt-get update
 #Resolving the bug - "Media change: please insert the disc labeled" - when using apt to install software
 sudo sed -i '/cdrom/d' /etc/apt/sources.list
-function install_config_vim {
+# Install and configure vim
+function install_vim {
   sudo apt-get install vim
   confs="set number"
   confs="${confs}"$'\n'"syntax on"
@@ -21,19 +22,33 @@ function install_config_vim {
 # @param $3 - shortcut keys e.g. <ctrl><alt>t
 function make_shortcut {
   custom_name=$(echo "${1}" |sed 's/ //g')
-  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/']"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ name "${1}"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ command "${2}"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ binding "${3}"  
+  existing_bindings=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings)
+  if [[ "$existing_bindings" = *"[]" ]]; then
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+"['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/']"
+  else
+    existing_bindings=$(sed "s/]/,'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/"${custom_name}"/']" \
+<<< "$existing_bindings")
+  fi
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
+/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ name "${1}"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
+/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ command "${2}"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
+/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ binding "${3}"  
 }
 
 # install Chrome
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome-stable_current_amd64.deb
-if [ $? -ne 0 ]; then
-  sudo apt-get install -f
-fi
-sudo dpkg -i google-chrome-stable_current_amd64.deb
+function install_chrome {
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  sudo dpkg -i google-chrome-stable_current_amd64.deb
+  if [ $? -ne 0 ]; then
+    sudo apt-get install -f
+  fi
+  sudo dpkg -i google-chrome-stable_current_amd64.deb
+  rm google-chrome-stable_current_amd64.deb
+}
+
 
 # add ibus Chinese input method
 function install_chinese_im {
@@ -44,8 +59,8 @@ function install_chinese_im {
     #Set only Finnish as the input-sources
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
     sudo apt-get install fcitx fcitx-googlepinyin
-    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64"\
-      2>&1 | grep "^  Location" |awk '{print $2}')
+    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" \
+2>&1 | grep "^  Location" |awk '{print $2}')
     file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
     wget $download_address -O $file_name
     sudo dpkg -i $file_name
