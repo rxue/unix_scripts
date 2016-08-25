@@ -23,12 +23,13 @@ function install_vim {
 function make_shortcut {
   custom_name=$(echo "${1}" |sed 's/ //g')
   existing_bindings=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings)
-  if [[ "$existing_bindings" = *"[]" ]]; then
+  if [[ "${existing_bindings}" = *"[]" ]]; then
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
 "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/']"
   else
     existing_bindings=$(sed "s/]/,'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/"${custom_name}"/']" \
-<<< "$existing_bindings")
+<<< "${existing_bindings}")
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "${existing_bindings}"
   fi
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
 /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ name "${1}"
