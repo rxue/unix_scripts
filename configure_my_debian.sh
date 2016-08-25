@@ -15,6 +15,18 @@ function install_config_vim {
   echo "${confs}" |sudo tee /root/.vimrc
 }
 
+# Make a keyboard shortcut to open the terminal
+# @param $1 - custom name e.g. 'open terminal' 
+# @param $2 - command e.g. program
+# @param $3 - shortcut keys e.g. <ctrl><alt>t
+function make_shortcut {
+  custom_name=$(echo "${1}" |sed 's/ //g')
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/']"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ name "${1}"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ command "${2}"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ binding "${3}"  
+}
+
 # install Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
@@ -26,9 +38,8 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 # add ibus Chinese input method
 function install_chinese_im {
   if [ "${1}" = "ibus" ]; then
-    sudo apt-get install ibus
-    sudo apt-get install ibus-pinyin
-    sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('xkb', 'us'), ('ibus', 'pinyin')]"
+    sudo apt-get install ibus ibus-libpinyin
+    sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('ibus', 'libpinyin')]"
   elif [ "${1}" = "sogoupinyin" ]; then
     #Set only Finnish as the input-sources
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
