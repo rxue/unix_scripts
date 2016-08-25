@@ -14,6 +14,8 @@ function install_vim {
   confs="${confs}"$'\n'"set softtabstop=2" 
   echo "${confs}" |tee ${HOME}/.vimrc
   echo "${confs}" |sudo tee /root/.vimrc
+  # set vim as the default editor of git
+  git config --global core.editor "vim"
 }
 
 # Make a keyboard shortcut to open the terminal
