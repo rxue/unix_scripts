@@ -86,4 +86,18 @@ function install_eclipse_installer {
   sudo tar -xvzf eclipse-inst-linux64.tar.gz --directory /opt
   rm eclipse-inst*
   # http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
-} 
+}
+
+# Add program to GNOME Main Menu 
+# $1 - program command e.g. /usr/bin/eclipse
+# $2 - program icon absolute path
+function add_program_to_gnome_main_menu {
+  program_name=$(basename ${1})
+  echo "[Desktop Entry]" > ~/.local/share/applications/${program_name}.desktop
+  echo "Comment=" >> ~/.local/share/applications/${program_name}.desktop
+  echo "Terminal=false" >> ~/.local/share/applications/${program_name}.desktop
+  echo "Name=${program_name}" >> ~/.local/share/applications/${program_name}.desktop
+  echo "Exec=${1}" >> ~/.local/share/applications/${program_name}.desktop
+  echo "Type=Application" >> ~/.local/share/applications/${program_name}.desktop
+  echo "Icon=${2}" >> ~/.local/share/applications/${program_name}.desktop
+}
