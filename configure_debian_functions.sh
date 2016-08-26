@@ -76,12 +76,12 @@ function install_openjdk8 {
   echo "deb http://ftp.de.debian.org/debian jessie-backports main" |sudo tee -a /etc/apt/sources.list
   sudo apt-get update
   sudo apt-get install openjdk-8-jdk
-  #sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
-  #sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java /etc/alternatives/java
+  sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
+  sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java /etc/alternatives/java
 }
 
 # Install Eclipse Neon
-function install_eclipse_installer {
+function install_eclipse_neon_installer {
   wget http://mirror.dkm.cz/eclipse/oomph/epp/neon/R/eclipse-inst-linux64.tar.gz
   sudo tar -xvzf eclipse-inst-linux64.tar.gz --directory /opt
   rm eclipse-inst*
@@ -91,13 +91,22 @@ function install_eclipse_installer {
 # Add program to GNOME Main Menu 
 # $1 - program command e.g. /usr/bin/eclipse
 # $2 - program icon absolute path
+# $3 - program name
 function add_program_to_gnome_main_menu {
-  program_name=$(basename ${1})
-  echo "[Desktop Entry]" > ~/.local/share/applications/${program_name}.desktop
-  echo "Comment=" >> ~/.local/share/applications/${program_name}.desktop
-  echo "Terminal=false" >> ~/.local/share/applications/${program_name}.desktop
-  echo "Name=${program_name}" >> ~/.local/share/applications/${program_name}.desktop
-  echo "Exec=${1}" >> ~/.local/share/applications/${program_name}.desktop
-  echo "Type=Application" >> ~/.local/share/applications/${program_name}.desktop
-  echo "Icon=${2}" >> ~/.local/share/applications/${program_name}.desktop
+  if [ -z "${3}" ]; then
+    program_name=$(basename ${1})
+    desktop_file_name=${program_name}
+  else
+    # Inline Python
+    desktop_file_name=$(python -c 'print "'"${3}"'".replace(" ", "-")')
+    desktop_file_name=$(python -c 'print "'"${desktop_file_name}"'".lower()')
+    program_name="${3}"
+  fi
+  echo "[Desktop Entry]" > ~/.local/share/applications/${desktop_file_name}.desktop
+  echo "Comment=" >> ~/.local/share/applications/${desktop_file_name}.desktop
+  echo "Terminal=false" >> ~/.local/share/applications/${desktop_file_name}.desktop
+  echo "Name=${program_name}" >> ~/.local/share/applications/${desktop_file_name}.desktop
+  echo "Exec=${1}" >> ~/.local/share/applications/${desktop_file_name}.desktop
+  echo "Type=Application" >> ~/.local/share/applications/${desktop_file_name}.desktop
+  echo "Icon=${2}" >> ~/.local/share/applications/${desktop_file_name}.desktop
 }
