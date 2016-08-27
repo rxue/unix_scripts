@@ -69,7 +69,18 @@ function install_chinese_im {
     rm $file_name
   fi
 }
-
+# Install Skype
+function install_skype {
+  location_str=$(wget --server-response --spider https://get.skype.com/go/getskype-linux-deb-32 2>&1 \
+|grep "^  Location")
+  download_url=$(python -c 'print "'"${location_str}"'".split()[-1]')
+  wget ${donwlo_url}
+  sudo dpkg --add-architecture i386
+  sudo apt-get update
+  sudo dpkg -i $(basename ${download_url})
+  sudo apt-get install -f
+  sudo dpkg -i $(basename ${download_url})
+}
 # Install Java 8 from openjdk
 # Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
 function install_openjdk8 {
