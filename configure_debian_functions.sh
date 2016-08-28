@@ -1,16 +1,18 @@
 #!/bin/bash
 # Install and configure vim
+# Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
   sudo apt-get install vim
-  confs="set number"
-  confs="${confs}"$'\n'"syntax on"
-  confs="${confs}"$'\n'"set hlsearch"
-  #ref: http://vim.wikia.com/wiki/Indenting_source_code
-  confs="${confs}"$'\n'"set expandtab"
-  confs="${confs}"$'\n'"set shiftwidth=2" 
-  confs="${confs}"$'\n'"set softtabstop=2" 
-  echo "${confs}" |tee ${HOME}/.vimrc
-  echo "${confs}" |sudo tee /root/.vimrc
+  config_statements=`cat <<EOF
+set number
+syntax on
+set hlsearch
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+EOF`
+  echo "${config_statements}" |tee ${HOME}/.vimrc
+  echo "${config_statements}" |sudo tee /root/.vimrc
   # set vim as the default editor of git
   git config --global core.editor "vim"
 }
