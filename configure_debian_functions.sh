@@ -3,6 +3,7 @@
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
   sudo apt-get install vim
+  # Reference: http://tldp.org/LDP/abs/html/here-docs.html
   config_statements=`cat <<EOF
 set number
 syntax on
