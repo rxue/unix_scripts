@@ -23,6 +23,7 @@ Declaring a function is just a matter of writing `function my_func { my_code }`.
 
 
 #### TODO
+* Add a crontab to shutdown PC at a specified time every day
 * Command instead of logout for Xsession refresh still unsolved, `source /etc/X11/Xsession` encountered errors
 * In case of installing on Virtual Box, add the Guest Addition installation script
 
