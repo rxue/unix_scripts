@@ -2,6 +2,14 @@
 [Bash Beginners Guide](http://www.tldp.org/LDP/Bash-Beginners-Guide/Bash-Beginners-Guide.pdf)
 
 ## Coding Convention
+* Sha-bang aka. Shebang
+
+The sha-bang (`#!`) at the head of a script tells your system that this file is a set of commands to be fed to the command interpreter indicated. 
+
+This is a **Linux-based Bash** script project, i.e. **non-POSIX**. So sha-bang `#!/bin/bash`
+
+<sub>Reference: [Advanced Bash-Scripting Guide](http://tldp.org/LDP/abs/html/) > [Chapter 2. Starting Off With a Sha-Bang](http://tldp.org/LDP/abs/html/sha-bang.html)</sub>
+
 * Variables
 
 When referencing a variable, surround its name with curly braces to clarify to the parser and to human readers where the variable name stops and other text begins; for example, `${etcdir}` instead of just `$etcdir`
