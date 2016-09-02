@@ -14,7 +14,7 @@ This is a **Linux-based Bash** script project, i.e. **non-POSIX**. So sha-bang `
 
 When referencing a variable, surround its name with curly braces to clarify to the parser and to human readers where the variable name stops and other text begins; for example, `${etcdir}` instead of just `$etcdir`
 
-There's no standard convention for the naming of shell variables, but all-caps names typically suggeskt environment variables or variables read from global configuration files. More often than not, local variable are all-lowercase with components separated by unserscores.
+There's no standard convention for the naming of shell variables, but all-caps names typically suggest environment variables or variables read from global configuration files. More often than not, local variable are all-lowercase with components separated by underscores.
 
 <sub>Reference: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 2 Scripting and the Shell > Shell basics > Variables and quoting (P/33)</sub>
 
@@ -23,6 +23,10 @@ There's no standard convention for the naming of shell variables, but all-caps n
 Declaring a function is just a matter of writing `function my_func { my_code }`. Calling a function is just like calling another program, just write its name. 
 
 <sub>Reference: [BASH Programming - Introduction HOW-TO](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html) > [8. Functions](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-8.html)</sub>
+
+* Strategy
+
+Along with the technology development trend, old style auxiliary language like `sed`, `awk` and `perl` are superseded by **python**. 
 
 ## Code Description
 
