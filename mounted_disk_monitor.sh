@@ -6,7 +6,7 @@
 # 3.  Send mail if there are partitions exceeded the limit and the last log LEVEL is INFO 
 # 4.  Take snapshot of the disk space state
 script_name=$(basename ${BASH_SOURCE})
-print_usage() {
+function print_usage {
   echo "usage: ${script_name} -f <file system type> -q <used disk space quota in percentage> \
 -e <target email address>"
   echo "NOTE! File system tmpfs and NFS are ignored"
@@ -92,7 +92,7 @@ function monitor_disk_partition_space {
 # $1 quota of used disk space
 # $2 file system type
 # $3 email address
-send_mail() {
+function send_mail {
   local _fs_type=${1}
   local _limit=${2}
   local _email=${3}
