@@ -26,11 +26,11 @@ Declaring a function is just a matter of writing `function my_func { my_code }`.
 
 * Strategy
 
-Along with the technology development trend, old style auxiliary language like `sed`, `awk` and `perl` are superseded by **python**. 
+Try to replace old style auxiliary language like `sed`, `awk` with **python** in case the syntax is too complicated to be readable. 
 
 ## Code Description
 
-### configure_my_debian.sh
+### configure_debian_functions.sh
 `bash configure_my_debian.sh`
 
 
@@ -38,6 +38,11 @@ Along with the technology development trend, old style auxiliary language like `
 * Add a crontab to shutdown PC at a specified time every day
 * Command instead of logout for Xsession refresh still unsolved, `source /etc/X11/Xsession` encountered errors
 * In case of installing on Virtual Box, add the Guest Addition installation script
+
+### mounted_disk_monitor.sh
+Technical keywords:
+* `getopts`
+* process substitution
 
 FAQ:
 ----
