@@ -24,7 +24,7 @@ Declaring a function is just a matter of writing `function my_func { my_code }`.
 
 <sub>Reference: [BASH Programming - Introduction HOW-TO](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html) > [8. Functions](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-8.html)</sub>
 
-* Strategy
+* Coding Strategy
 
 Try to replace old style auxiliary language like `sed`, `awk` with **python** in case the syntax is too complicated to be readable. 
 
