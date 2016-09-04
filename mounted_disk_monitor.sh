@@ -83,11 +83,12 @@ function monitor_disk_partition_space {
     fi
   #http://tldp.org/LDP/abs/html/process-sub.html
   done < <(df --block-size=1024 --type=${_fs_type} 2>/dev/null |sed 1d)
-  if $_looped; then 
-    return $_ret
-  else 
-    return 2
+  if ${_looped} && [ ${_ret} -eq 0 ]; then 
+    logger -t "${script_name}" "INFO: So far so good"
+  elif ! ${_looped}; then 
+    _ret=2
   fi
+  return ${_ret}
 }
 # $1 quota of used disk space
 # $2 file system type

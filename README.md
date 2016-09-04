@@ -42,6 +42,7 @@ Try to replace old style auxiliary language like `sed`, `awk` with **python** in
 ### mounted_disk_monitor.sh
 Technical keywords:
 * `getopts`
+* rsyslog > command `logger` with option `-t`
 * process substitution
 
 FAQ:
