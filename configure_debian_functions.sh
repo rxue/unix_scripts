@@ -1,4 +1,3 @@
-#!/bin/bash
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
@@ -123,4 +122,11 @@ function add_program_to_gnome_main_menu {
   echo "Exec=${1}" >> ~/.local/share/applications/${desktop_file_name}.desktop
   echo "Type=Application" >> ~/.local/share/applications/${desktop_file_name}.desktop
   echo "Icon=${2}" >> ~/.local/share/applications/${desktop_file_name}.desktop
+}
+
+function install_postfix {
+  sudo debconf-set-selections <<< "postfix postfix/mailname string example.com"
+  sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+  sudo apt-get install -y postfix
+  sudo sed -i "s/inet_interfaces =.*$/inet_interfaces = loopbak-only/" /etc/postfix/main.cf 
 }
