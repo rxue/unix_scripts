@@ -22,7 +22,7 @@ fi
 #     1 there are partitions exceeded limit 
 #     2 no partitions found with the given file system type
 function monitor_disk_partition_space {
-  local fs_type="${1}"
+  local _fs_type="${1}"
   local limit=30
   if [ -n "${2}" ]; then
     limit="${2}"
@@ -43,12 +43,23 @@ function monitor_disk_partition_space {
       ret=1
     fi
   #http://tldp.org/LDP/abs/html/process-sub.html
-  done < <(df --block-size=1024 --type=${fs_type})
+  done < <(df --block-size=1024 --type=${_fs_type} 2>/dev/null)
   if $looped; then 
     return $ret
   else 
     return 2
   fi
 }
+fs_type=ext4
+# $1 email address
+send_mail() {
+  subject="Some of the disk partitions exceeded the limit - $quota - in ${HOSTNAME}"
+
+  echo "
+${subject}. Refer to the following snapshot of command - df:
+
+$(df --block-size=1024 --type=${fs_type} -h)" |mail -s "$subject" $1
+}
 monitor_disk_partition_space xfs
+
 
