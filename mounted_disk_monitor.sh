@@ -48,10 +48,10 @@ if [ -z "${quota}" ]; then
   echo "disk quota in percentage (1-100) not given" >&2
   print_usage 1
 fi
-log_file="/var/log${script_name/.sh/.log}"
+log_file="/var/log/${script_name/.sh/.log}"
 last_log="$(tail -n 1 ${log_file} 2>/dev/null)"
 last_log_level="INFO"
-if grep "WARN" <<<"${ast_log}"; then
+if grep "WARN" <<<"${last_log}"; then
   last_log_level="WARN"
 fi
 # Monitor the disk partitions space state
