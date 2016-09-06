@@ -45,6 +45,9 @@ Technical keywords:
 * rsyslog > command `logger` with option `-t`
 * process substitution
 
+#### TODO
+* WARNING SHOULD BE SENT ONCE A DAY, whereas currently it is sent only ONCE 
+
 FAQ:
 ----
 * How to check the distribution version of your current Linux: `lsb_release -a` 
