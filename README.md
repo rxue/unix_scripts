@@ -33,11 +33,13 @@ Try to replace old style auxiliary language like `sed`, `awk` with **python** in
 ### configure_debian_functions.sh
 `bash configure_my_debian.sh`
 
-
 #### TODO
 * Add a crontab to shutdown PC at a specified time every day
 * Command instead of logout for Xsession refresh still unsolved, `source /etc/X11/Xsession` encountered errors
 * In case of installing on Virtual Box, add the Guest Addition installation script
+* Install the **lvm2 (Logical Volume Manager)** and make use of it to manage the disk instead of *partitions*. (As administrators get comfortable with logical volume management, partitions are disappearing, too.) 
+
+<sub>Reference: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 8 Storage > 8.4 Peeling the Onion: The Software Side of Storage (P/222)</sub>
 
 ### mounted_disk_monitor.sh
 Technical keywords:
