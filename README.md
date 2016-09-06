@@ -52,4 +52,4 @@ FAQ:
 ----
 * How to check the distribution version of your current Linux: `lsb_release -a` 
 * How to get running script directory: ``$(cd `dirname $0` && pwd)``
-* How to list all the block devices regardless of mounted or not: `lsblk` 
+* How to list the system's disks and identify the new drive: `sudo fdisk -l` 
