@@ -89,9 +89,9 @@ function install_openjdk8 {
   echo "deb http://ftp.de.debian.org/debian jessie-backports main" |sudo tee -a /etc/apt/sources.list
   sudo apt-get update
   sudo apt-get install openjdk-8-jdk
-  sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
-  sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java /etc/alternatives/java
-  sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/javac /etc/alternatives/javac
+  sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
+  sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java /etc/alternatives/java
+  sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/javac /etc/alternatives/javac
 }
 
 # Install Eclipse Neon
