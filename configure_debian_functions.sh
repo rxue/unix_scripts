@@ -1,7 +1,7 @@
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
-  sudo apt-get install vim
+  apt-get install vim
   # Reference: http://tldp.org/LDP/abs/html/here-docs.html
   config_statements=`cat <<EOF
 set number
@@ -12,7 +12,7 @@ set shiftwidth=2
 set softtabstop=2
 EOF`
   echo "${config_statements}" |tee ${HOME}/.vimrc
-  echo "${config_statements}" |sudo tee /root/.vimrc
+  echo "${config_statements}" |tee /root/.vimrc
   # set vim as the default editor of git
   git config --global core.editor "vim"
 }
@@ -42,31 +42,31 @@ function make_shortcut {
 # Install Chrome
 function install_chrome {
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  sudo dpkg -i google-chrome-stable_current_amd64.deb
+  dpkg -i google-chrome-stable_current_amd64.deb
   if [ $? -ne 0 ]; then
-    sudo apt-get install -f
+    apt-get install -f
   fi
-  sudo dpkg -i google-chrome-stable_current_amd64.deb
+  dpkg -i google-chrome-stable_current_amd64.deb
   rm google-chrome-stable_current_amd64.deb
 }
 
 # Add ibus Chinese input method
 function install_chinese_im {
   if [ "${1}" = "ibus" ]; then
-    sudo apt-get install ibus ibus-libpinyin
-    sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('ibus', 'libpinyin')]"
+    apt-get install ibus ibus-libpinyin
+    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('ibus', 'libpinyin')]"
   elif [ "${1}" = "sogoupinyin" ]; then
     #Set only Finnish as the input-sources
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
-    sudo apt-get install fcitx fcitx-googlepinyin
+    apt-get install fcitx fcitx-googlepinyin
     download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" \
 2>&1 | grep "^  Location" |awk '{print $2}')
     file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
     wget $download_address -O $file_name
-    sudo dpkg -i $file_name
+    dpkg -i $file_name
     if [ $? -ne 0]; then
-      sudo apt-get install -f
-      sudo dpkg -i $file_name
+      apt-get install -f
+      dpkg -i $file_name
     fi
     rm $file_name
   fi
@@ -77,39 +77,39 @@ function install_skype {
 |grep "^  Location")
   download_url=$(python -c 'print "'"${location_str}"'".split()[-1]')
   wget ${donwlo_url}
-  sudo dpkg --add-architecture i386
-  sudo apt-get update
-  sudo dpkg -i $(basename ${download_url})
-  sudo apt-get install -f
-  sudo dpkg -i $(basename ${download_url})
+  dpkg --add-architecture i386
+  apt-get update
+  dpkg -i $(basename ${download_url})
+  apt-get install -f
+  dpkg -i $(basename ${download_url})
 }
 # Install Java 8 from openjdk
 # Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
 function install_openjdk8 {
-  echo "deb http://ftp.de.debian.org/debian jessie-backports main" |sudo tee -a /etc/apt/sources.list
-  sudo apt-get update
-  sudo apt-get install openjdk-8-jdk
+  echo "deb http://ftp.de.debian.org/debian jessie-backports main" |tee -a /etc/apt/sources.list
+  apt-get update
+  apt-get install openjdk-8-jdk
   # Modify links in /etc/alternative
   java8_dir="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
   ##Modify links to Java8's executables
   java8_bin_dir="${java8_dir}/bin"
   java_execs=$(ls ${java8_bin_dir})
   for java_exec in ${java_execs}; do
-    if ls /etc/alternatives/${java_exec}; then sudo ln -fs ${java8_bin_dir}/${java_exec} /etc/alternatives/${java_exec}; fi
+    if ls /etc/alternatives/${java_exec}; then ln -fs ${java8_bin_dir}/${java_exec} /etc/alternatives/${java_exec}; fi
   done
   ##Modify links to Java8's manual files
   java8_manual_dir="${java8_dir}/man/man1"
   java8_manuals=$(ls ${java8_manual_dir})
   for java8_manual in ${java8_manuals}; do
-    if ls /etc/alternatives/${java8_manual}; then sudo ln -fs ${java8_manual_dir}/${java8_manual} /etc/alternatives/${java8_manual}; fi
+    if ls /etc/alternatives/${java8_manual}; then ln -fs ${java8_manual_dir}/${java8_manual} /etc/alternatives/${java8_manual}; fi
   done
-  sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
+  ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
 }
 
 # Install Eclipse Neon
 function install_eclipse_neon_installer {
   wget http://mirror.dkm.cz/eclipse/oomph/epp/neon/R/eclipse-inst-linux64.tar.gz
-  sudo tar -xvzf eclipse-inst-linux64.tar.gz --directory /opt
+  tar -xvzf eclipse-inst-linux64.tar.gz --directory /opt
   rm eclipse-inst*
   # http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
 }
@@ -138,12 +138,12 @@ function add_program_to_gnome_main_menu {
 }
 
 function install_postfix {
-  sudo debconf-set-selections <<< "postfix postfix/mailname string example.com"
-  sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-  sudo apt-get install -y postfix
-  sudo sed -i "s/inet_interfaces =.*$/inet_interfaces = loopbak-only/" /etc/postfix/main.cf 
+  debconf-set-selections <<< "postfix postfix/mailname string example.com"
+  debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+  apt-get install -y postfix
+  sed -i "s/inet_interfaces =.*$/inet_interfaces = loopbak-only/" /etc/postfix/main.cf 
 }
 function install_system_monitors {
-  sudo apt-get install strace
-  sudo apt-get install htop
+  apt-get install strace
+  apt-get install htop
 }
