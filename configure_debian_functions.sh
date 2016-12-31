@@ -91,6 +91,7 @@ function install_openjdk8 {
   sudo apt-get install openjdk-8-jdk
   sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
   sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java /etc/alternatives/java
+  sudo ln -f -s /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/javac /etc/alternatives/javac
 }
 
 # Install Eclipse Neon
@@ -129,4 +130,8 @@ function install_postfix {
   sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
   sudo apt-get install -y postfix
   sudo sed -i "s/inet_interfaces =.*$/inet_interfaces = loopbak-only/" /etc/postfix/main.cf 
+}
+function install_system_monitors {
+  sudo apt-get install strace
+  sudo apt-get install htop
 }
