@@ -89,9 +89,21 @@ function install_openjdk8 {
   echo "deb http://ftp.de.debian.org/debian jessie-backports main" |sudo tee -a /etc/apt/sources.list
   sudo apt-get update
   sudo apt-get install openjdk-8-jdk
+  # Modify links in /etc/alternative
+  java8_dir="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
+  ##Modify links to Java8's executables
+  java8_bin_dir="${java8_dir}/bin"
+  java_execs=$(ls ${java8_bin_dir})
+  for java_exec in ${java_execs}; do
+    if ls /etc/alternatives/${java_exec}; then sudo ln -fs ${java8_bin_dir}/${java_exec} /etc/alternatives/${java_exec}; fi
+  done
+  ##Modify links to Java8's manual files
+  java8_manual_dir="${java8_dir}/man/man1"
+  java8_manuals=$(ls ${java8_manual_dir})
+  for java8_manual in ${java8_manuals}; do
+    if ls /etc/alternatives/${java8_manual}; then sudo ln -fs ${java8_manual_dir}/${java8_manual} /etc/alternatives/${java8_manual}; fi
+  done
   sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
-  sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java /etc/alternatives/java
-  sudo ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/javac /etc/alternatives/javac
 }
 
 # Install Eclipse Neon
