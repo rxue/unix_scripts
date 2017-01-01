@@ -3,6 +3,7 @@
 function install_vim {
   apt-get install vim
   # Reference: http://tldp.org/LDP/abs/html/here-docs.html
+  #Configure VIM on the system level
   config_statements=`cat <<EOF
 set number
 syntax on
@@ -11,8 +12,7 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 EOF`
-  echo "${config_statements}" |tee ${HOME}/.vimrc
-  echo "${config_statements}" |tee /root/.vimrc
+  echo "${config_statements}" |tee /etc/vim/vimrc.local
   # set vim as the default editor of git
   git config --global core.editor "vim"
 }
