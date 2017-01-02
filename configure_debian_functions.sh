@@ -19,13 +19,14 @@ EOF`
 # Install Java 8 from openjdk
 # Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
 function install_openjdk8 {
+  #Remove existing openjdk
+  apt-get remove openjdk-*
   local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
   if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
     echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
   fi
   apt-get update
   apt-get install openjdk-8-jdk
-  #openjdk-8 is installed to directory /usr/lib/jvm/java-1.8.0-openjdk-amd64
 }
 # Make a keyboard shortcut to open the terminal
 # @param $1 - custom name e.g. 'open terminal' 
@@ -95,7 +96,27 @@ function install_skype {
   dpkg -i $(basename ${download_url})
 }
 
+# Add program to GNOME Main Menu on system level 
+# $1 - program command e.g. /usr/bin/eclipse
+# $2 - program icon absolute path e.g. /opt/eclipse/eclipse.xpm
+# $3 - program name
+function add_program_to_gnome_main_menu {
+  local _desktop_file_name="$(basename ${1})"
+  local  _program_name="${3}"
+  local _desktop_file_content=`cat <<EOF
+[Desktop Entry]
+Comment=
+Terminal=false
+Name=${_program_name}
+Exec=${1}
+Type=Application
+Icon=${2}
+EOF`
+  echo "${_desktop_file_content}" |tee /usr/share/applications/${_desktop_file_name}.desktop
+}
+
 # Install Eclipse Neon
+# This function is calling the function add_program_to_gnome_main_menu
 function install_eclipse_installer {
   if [ -z "$1" ]; then
     local _installer_http_addr="https://www.eclipse.org/downloads/download.php?file=/oomph/epp/neon/R2a/eclipse-inst-linux64.tar.gz"
@@ -104,30 +125,11 @@ function install_eclipse_installer {
   wget "${_actual_http_addr}"
   tar -xvzf $(basename ${_actual_http_addr})
   rm $(basename ${_actual_http_addr})
-  # http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
-}
-
-# Add program to GNOME Main Menu 
-# $1 - program command e.g. /usr/bin/eclipse
-# $2 - program icon absolute path
-# $3 - program name
-function add_program_to_gnome_main_menu {
-  if [ -z "${3}" ]; then
-    program_name=$(basename ${1})
-    desktop_file_name=${program_name}
-  else
-    # Inline Python
-    desktop_file_name=$(python -c 'print "'"${3}"'".replace(" ", "-")')
-    desktop_file_name=$(python -c 'print "'"${desktop_file_name}"'".lower()')
-    program_name="${3}"
-  fi
-  echo "[Desktop Entry]" > ~/.local/share/applications/${desktop_file_name}.desktop
-  echo "Comment=" >> ~/.local/share/applications/${desktop_file_name}.desktop
-  echo "Terminal=false" >> ~/.local/share/applications/${desktop_file_name}.desktop
-  echo "Name=${program_name}" >> ~/.local/share/applications/${desktop_file_name}.desktop
-  echo "Exec=${1}" >> ~/.local/share/applications/${desktop_file_name}.desktop
-  echo "Type=Application" >> ~/.local/share/applications/${desktop_file_name}.desktop
-  echo "Icon=${2}" >> ~/.local/share/applications/${desktop_file_name}.desktop
+  eclipse-installer/eclipse-inst
+  # NB! When using the installer to install Eclipse IDE, turn off the "BUNDLE POOLS" on the upper righ corner of the installer GUI
+  # Refer to http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
+  ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
+  add_program_to_gnome_main_menu /opt/eclipse/eclipse /opt/eclipse/icon.xpm "Eclipse-Neon"
 }
 
 function install_postfix {
