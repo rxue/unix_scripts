@@ -86,24 +86,17 @@ function install_skype {
 # Install Java 8 from openjdk
 # Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
 function install_openjdk8 {
-  echo "deb http://ftp.de.debian.org/debian jessie-backports main" |tee -a /etc/apt/sources.list
+  local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
+  if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
+    echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
+  fi
   apt-get update
   apt-get install openjdk-8-jdk
   # Modify links in /etc/alternative
-  java8_dir="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
+  #java8_dir="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
   ##Modify links to Java8's executables
-  java8_bin_dir="${java8_dir}/bin"
-  java_execs=$(ls ${java8_bin_dir})
-  for java_exec in ${java_execs}; do
-    if ls /etc/alternatives/${java_exec}; then ln -fs ${java8_bin_dir}/${java_exec} /etc/alternatives/${java_exec}; fi
-  done
-  ##Modify links to Java8's manual files
-  java8_manual_dir="${java8_dir}/man/man1"
-  java8_manuals=$(ls ${java8_manual_dir})
-  for java8_manual in ${java8_manuals}; do
-    if ls /etc/alternatives/${java8_manual}; then ln -fs ${java8_manual_dir}/${java8_manual} /etc/alternatives/${java8_manual}; fi
-  done
-  ln -fs /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/man/man1/java.1.gz /etc/alternatives/java.1.gz
+  #java8_bin_dir="${java8_dir}/bin"
+  #java_execs=$(ls ${java8_bin_dir})
 }
 
 # Install Eclipse Neon
