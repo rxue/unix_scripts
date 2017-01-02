@@ -16,6 +16,17 @@ EOF`
   # set vim as the default editor of git
   git config --global core.editor "vim"
 }
+# Install Java 8 from openjdk
+# Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
+function install_openjdk8 {
+  local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
+  if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
+    echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
+  fi
+  apt-get update
+  apt-get install openjdk-8-jdk
+  #openjdk-8 is installed to directory /usr/lib/jvm/java-1.8.0-openjdk-amd64
+}
 # Make a keyboard shortcut to open the terminal
 # @param $1 - custom name e.g. 'open terminal' 
 # @param $2 - command e.g. program
@@ -83,27 +94,16 @@ function install_skype {
   apt-get install -f
   dpkg -i $(basename ${download_url})
 }
-# Install Java 8 from openjdk
-# Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
-function install_openjdk8 {
-  local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
-  if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
-    echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
-  fi
-  apt-get update
-  apt-get install openjdk-8-jdk
-  # Modify links in /etc/alternative
-  #java8_dir="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
-  ##Modify links to Java8's executables
-  #java8_bin_dir="${java8_dir}/bin"
-  #java_execs=$(ls ${java8_bin_dir})
-}
 
 # Install Eclipse Neon
-function install_eclipse_neon_installer {
-  wget http://mirror.dkm.cz/eclipse/oomph/epp/neon/R/eclipse-inst-linux64.tar.gz
-  tar -xvzf eclipse-inst-linux64.tar.gz --directory /opt
-  rm eclipse-inst*
+function install_eclipse_installer {
+  if [ -z "$1" ]; then
+    local _installer_http_addr="https://www.eclipse.org/downloads/download.php?file=/oomph/epp/neon/R2a/eclipse-inst-linux64.tar.gz"
+  fi
+  local _actual_http_addr=$(wget --server-response --spider "${_installer_http_addr}" 2>&1 |grep "^Location:" |awk '{print $2}')
+  wget "${_actual_http_addr}"
+  tar -xvzf $(basename ${_actual_http_addr})
+  rm $(basename ${_actual_http_addr})
   # http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
 }
 
