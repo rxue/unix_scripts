@@ -29,6 +29,23 @@ function install_openjdk8 {
   apt-get update
   apt-get install openjdk-8-jdk
 }
+# Install maven (default maven version is 3.3.9)
+# Why not using the maven 3.9x from apt repository? Because the spring boot maven plugin requires the maven version to be at least 3.2
+# Refer to http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html
+function install_maven {
+  if [ -n "$1" ]; then
+    local _download_addr="${1}"
+  else
+    local _download_addr="http://mirror.netinch.com/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"
+  fi
+  local _maven_bin_tar=$(basename ${_download_addr})
+  wget ${_download_addr}
+  mkdir -p /opt/maven  
+  tar -xzvf ${_maven_bin_tar} -C /opt/maven
+  rm ${_maven_bin_tar}
+  local _maven_bin_dirname=$(echo "${_maven_bin_tar}" |sed 's/-bin\.tar\.gz$//')
+  ln -s /opt/maven/${_maven_bin_dirname}/bin/mvn /usr/bin/mvn
+}
 # Make a keyboard shortcut to open the terminal
 # @param $1 - custom name e.g. 'open terminal' 
 # @param $2 - command e.g. program
