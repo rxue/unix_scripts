@@ -117,7 +117,7 @@ function install_postfix {
   debconf-set-selections <<< "postfix postfix/mailname string example.com"
   debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
   apt-get install -y postfix
-  sed -i "s/inet_interfaces =.*$/inet_interfaces = loopbak-only/" /etc/postfix/main.cf 
+  sed -i "s/inet_interfaces =.*$/inet_interfaces = loopback-only/" /etc/postfix/main.cf 
 }
 
 function install_system_monitors {
