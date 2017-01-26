@@ -47,7 +47,7 @@ function install_maven {
   ln -s /opt/maven/${_maven_bin_dirname}/bin/mvn /usr/bin/mvn
 }
 # Make a keyboard shortcut to open the terminal
-# @param $1 - custom name e.g. 'open terminal' 
+# @param $1 - custom name e.g. 'open Terminal' 
 # @param $2 - command e.g. gnome-terminal
 # @param $3 - shortcut keys e.g. <ctrl><alt>t
 function make_shortcut {
