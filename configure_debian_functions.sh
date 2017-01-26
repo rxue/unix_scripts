@@ -48,25 +48,21 @@ function install_maven {
 }
 # Make a keyboard shortcut to open the terminal
 # @param $1 - custom name e.g. 'open terminal' 
-# @param $2 - command e.g. program
+# @param $2 - command e.g. gnome-terminal
 # @param $3 - shortcut keys e.g. <ctrl><alt>t
 function make_shortcut {
   custom_name=$(echo "${1}" |sed 's/ //g')
-  existing_bindings=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings)
-  if [[ "${existing_bindings}" = *"[]" ]]; then
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
-"['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/']"
-  else
-    existing_bindings=$(sed "s/]/,'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/"${custom_name}"/']" \
-<<< "${existing_bindings}")
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "${existing_bindings}"
-  fi
+  new_keybinding="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/"
+  existing_keybindings_val=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings |sed 's/^@as //')
+  new_keybinding_val="'${new_keybinding}'"
+  custom_keybindings=$(python -c 'list='"${existing_keybindings_val}"'; list.append('"${new_keybinding_val}"'); print list')
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "${custom_keybindings}"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
-/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ name "${1}"
+${new_keybinding} name "${1}"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
-/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ command "${2}"
+${new_keybinding} command "${2}"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
-/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/ binding "${3}"  
+${new_keybinding} binding "${3}"  
 }
 
 # Add program to GNOME Main Menu on system level 
