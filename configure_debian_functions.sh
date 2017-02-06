@@ -30,7 +30,9 @@ function install_openjdk8 {
   apt-get install openjdk-8-jdk
 }
 # Install maven (default maven version is 3.3.9)
-# Why not using the maven 3.9x from apt repository? Because the spring boot maven plugin requires the maven version to be at least 3.2
+# FAQ: 
+# * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
+# Why not using the maven 3.9x from apt repository? Because the Spring Boot maven plugin requires the maven version to be at least 3.2
 # Refer to http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html
 function install_maven {
   if [ -n "$1" ]; then
