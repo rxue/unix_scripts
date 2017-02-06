@@ -39,6 +39,7 @@ Try to replace old style auxiliary language like `sed`, `awk` with **python** in
 * In case of installing on Virtual Box, add the Guest Addition installation script
 * Install the **lvm2 (Logical Volume Manager)** and make use of it to manage the disk instead of *partitions* (As administrators get comfortable with logical volume management, partitions are disappearing, too.). Try to make use of **snapshots** to make a backup mechanism with an external storage device
 * Make an lost+found mechanism like the recycle bin in Windows
+* 20170206: based on the Java class file format (refer to https://en.wikipedia.org/wiki/Java_class_file and http://stackoverflow.com/questions/698129/how-can-i-find-the-target-java-version-for-a-compiled-class), create a script to get the Java class version information
 
 <sub>Reference: UNIX AND LINUX SYSTEM ADMINISTRATION HANDBOOK (4th edition) > Chapter 8 Storage > 8.4 Peeling the Onion: The Software Side of Storage (P/222)</sub>
 
