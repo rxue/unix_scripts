@@ -29,6 +29,15 @@ function install_openjdk8 {
   apt-get update
   apt-get install openjdk-8-jdk
 }
+# Install sbt for Scala development
+# Reference: http://www.scala-sbt.org/1.0/docs/Installing-sbt-on-Linux.html
+function install_sbt {
+  sudo apt-get install apt-transport-https
+  echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
+  sudo apt-get update
+  sudo apt-get install sbt
+}
 # Install maven (default maven version is 3.3.9)
 # FAQ: 
 # * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
