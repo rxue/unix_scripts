@@ -27,7 +27,7 @@ function install_openjdk8 {
     echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
   fi
   apt-get update
-  apt-get install openjdk-8-jdk
+  apt-get install openjdk-8-jdk openjdk-8-source
 }
 # Install sbt for Scala development
 # Reference: http://www.scala-sbt.org/1.0/docs/Installing-sbt-on-Linux.html
