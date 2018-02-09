@@ -17,7 +17,8 @@ EOF`
   # set vim as the default editor of git
   git config --global core.editor "vim"
 }
-# Install Java 8 from openjdk
+# Install Java 8 from openjdk along with its source code, which is a cool study material for 
+#   learning advance Java stuff, e.g. design patterns and principles etc.
 # Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
 function install_openjdk8 {
   #Remove existing openjdk
