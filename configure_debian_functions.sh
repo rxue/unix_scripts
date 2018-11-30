@@ -48,15 +48,14 @@ function install_maven {
   if [ -n "$1" ]; then
     local _download_addr="${1}"
   else
-    local _download_addr="http://mirror.netinch.com/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"
+    local _download_addr="https://www-eu.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
   fi
   local _maven_bin_tar=$(basename ${_download_addr})
   wget ${_download_addr}
-  mkdir -p /opt/maven  
-  tar -xzvf ${_maven_bin_tar} -C /opt/maven
+  tar -xzvf ${_maven_bin_tar} -C /opt
   rm ${_maven_bin_tar}
   local _maven_bin_dirname=$(echo "${_maven_bin_tar}" |sed 's/-bin\.tar\.gz$//')
-  ln -s /opt/maven/${_maven_bin_dirname}/bin/mvn /usr/bin/mvn
+  ln -s /opt/${_maven_bin_dirname}/bin/mvn /usr/bin/mvn
 }
 # Make a keyboard shortcut to open the terminal
 # @param $1 - custom name e.g. 'open Terminal' 
