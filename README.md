@@ -31,6 +31,13 @@ Try to replace old style auxiliary language like `sed`, `awk` with **python** in
 ## Code Description
 
 ### configure_debian_functions.sh
+#### How to use functions in configure_debian_functions.sh 
+All the functions are about installing extra software, usually to `/opt`. In order to install software to `/opt`, 
+1. go to the directory of this script, shift to `sudo` mode with `su` command
+2. give the password of `sudo`, click enter to shift to `sudo` mode
+3. `source configure_debian_function.sh`
+4. call any of the functions in configure_debian_functions.sh, e.g. `install_maven`
+  
 `bash configure_my_debian.sh`
 
 #### TODO
