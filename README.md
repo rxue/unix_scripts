@@ -64,3 +64,6 @@ FAQ:
 * How to check the distribution version of your current Linux: `lsb_release -a` 
 * How to get running script directory: ``$(cd `dirname $0` && pwd)``
 * How to list the system's disks and identify the new drive: `sudo fdisk -l` 
+
+## Other Software Installation
+https://github.com/nodesource/distributions#debmanual
