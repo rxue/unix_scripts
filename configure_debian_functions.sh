@@ -1,4 +1,4 @@
-#### Professional
+
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
@@ -14,8 +14,14 @@ set shiftwidth=2
 set softtabstop=2
 EOF`
   echo "${config_statements}" |tee /etc/vim/vimrc.local
+
+}
+function install_git {
+  # display colours for example on git status or git diff commands
+  git config --global --add color.ui true
   # set vim as the default editor of git
   git config --global core.editor "vim"
+  
 }
 # Install Java 8 from openjdk along with its source code, which is a cool study material for 
 #   learning advance Java stuff, e.g. design patterns and principles etc.
