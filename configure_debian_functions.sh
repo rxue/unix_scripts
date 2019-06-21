@@ -175,4 +175,8 @@ function install_skype {
   dpkg -i $(basename ${download_url})
   apt-get install -f
   dpkg -i $(basename ${download_url})
+}
+# Install Docker
+function install_docker {
+  usermod -aG docker $USER
 } 
