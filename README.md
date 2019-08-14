@@ -59,9 +59,11 @@ Technical keywords:
 #### TODO
 * WARNING SHOULD BE SENT ONCE A DAY, whereas currently it is sent only ONCE 
 
-FAQ:
+## Learning
+### FAQ
 ----
-* How to check the distribution version of your current Linux: `lsb_release -a` 
+* How to check the distribution version of your current Linux 
+Answer: Distribution version is stored in `/etc/system-release` 
 * How to get running script directory: ``$(cd `dirname $0` && pwd)``
 * How to list the system's disks and identify the new drive: `sudo fdisk -l` 
 
