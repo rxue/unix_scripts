@@ -65,7 +65,8 @@ Technical keywords:
 * How to check the distribution version of your current Linux 
 Answer: Distribution version is stored in `/etc/os-release` 
 * How to get running script directory: ``$(cd `dirname $0` && pwd)``
-* How to list the system's disks and identify the new drive: `sudo fdisk -l` 
+* How to list the system's disks and identify the new drive: `sudo fdisk -l`
+* How search text from a File with `less` from bottom up: `?keyword`
 
 ## Other Software Installation
 https://github.com/nodesource/distributions#debmanual
