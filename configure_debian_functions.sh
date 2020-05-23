@@ -1,4 +1,3 @@
-
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
@@ -16,6 +15,13 @@ EOF`
   echo "${config_statements}" |tee /etc/vim/vimrc.local
 
 }
+
+function install_python3 {
+  apt-get install python3-pip
+  # venv does not come with venv in Linux but Windows
+  apt-get install python3-venv
+}
+
 function install_git {
   # display colours for example on git status or git diff commands
   git config --global --add color.ui true
