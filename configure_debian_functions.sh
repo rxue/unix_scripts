@@ -16,10 +16,10 @@ EOF`
 
 }
 
-function install_python3 {
+install_python3() {
   apt-get install python3-pip
-  # venv does not come with venv in Linux but Windows
-  apt-get install python3-venv
+  # venv is a subset of virtualenv, so use virtualenv. Reference: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe
+  pip3 virtualenv
 }
 
 function install_git {
