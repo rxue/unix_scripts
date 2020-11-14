@@ -1,6 +1,6 @@
 # @param 1 - authorization data, currently basic loginemail:password
-# @param 2 - project key in Bitbucket
-# @param 3 - workspace, i.e. user name
+# @param 2 - project key in Bitbucket. In Bitbucket, project is the parent of multiple repositories. This can be learnt through the web GUI with web browser
+# @param 3 - workspace, i.e. user name. For instance, my user name is rxue911
 # @param 4 - repository name
 # reference: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D#post
 function create_repo_in_bitbucket {
