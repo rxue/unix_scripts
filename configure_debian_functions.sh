@@ -11,12 +11,22 @@ set hlsearch
 set expandtab
 set shiftwidth=2
 set softtabstop=2
+# Imitate NerdTree: https://shapeshed.com/vim-netrw/
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
 EOF`
   echo "${config_statements}" |tee /etc/vim/vimrc.local
 
 }
 
-install_python3() {
+function install_python3 {
   apt-get install python3-pip
   # venv is a subset of virtualenv, so use virtualenv. Reference: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe
   pip3 virtualenv
