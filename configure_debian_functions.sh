@@ -32,12 +32,14 @@ function install_python3 {
   pip3 virtualenv
 }
 
-function install_git {
+function configure_git {
+  git config --global user.email "ruixue.fi@gmail.com"
+  git config --global user.name "Rui Xue"
   # display colours for example on git status or git diff commands
   git config --global --add color.ui true
   # set vim as the default editor of git
   git config --global core.editor "vim"
-  
+  ssh-keygen -t ed25519 -C "ruixue.fi@gmail.com"
 }
 # Install Java 8 from openjdk along with its source code, which is a cool study material for 
 #   learning advance Java stuff, e.g. design patterns and principles etc.
