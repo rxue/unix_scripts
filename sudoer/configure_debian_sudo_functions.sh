@@ -32,43 +32,13 @@ function configure_python3 {
   # venv is a subset of virtualenv, so use virtualenv. Reference: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe
   pip3 virtualenv
 }
-
-# Install Java 8 from openjdk along with its source code, which is a cool study material for 
-#   learning advance Java stuff, e.g. design patterns and principles etc.
-# Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
-#function install_openjdk8 {
-#  #Remove existing openjdk
-#  apt-get remove openjdk-*
-#  local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
-#  if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
-#    echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
-#  fi
-#  apt-get update
-#  apt-get install openjdk-8-jdk openjdk-8-source
-#}
-
-# Install maven (default maven version is 3.3.9)
 # FAQ: 
 # * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
-# Why not using the maven 3.9x from apt repository? Because the Spring Boot maven plugin requires the maven version to be at least 3.2
-# Refer to http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html
-function install_maven {
-  if [ -n "$1" ]; then
-    local _download_addr="${1}"
-  else
-    local _download_addr="https://www-eu.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
-  fi
-  local _maven_bin_tar=$(basename ${_download_addr})
-  wget ${_download_addr}
-  tar -xzvf ${_maven_bin_tar} -C /opt
-  rm ${_maven_bin_tar}
-  local _maven_bin_dirname=$(echo "${_maven_bin_tar}" |sed 's/-bin\.tar\.gz$//')
-  ln -s /opt/${_maven_bin_dirname}/bin/mvn /usr/bin/mvn
-}
+
 # Make a keyboard shortcut to open the terminal
 # @param $1 - custom name e.g. 'open Terminal' 
 # @param $2 - command e.g. gnome-terminal
-# @param $3 - shortcut keys e.g. <ctrl><alt>t
+# @param $3 - shortcut keys e.g. "<Primary><alt>t" (Primary is ctrl)
 function make_shortcut {
   custom_name=$(echo "${1}" |sed 's/ //g')
   new_keybinding="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/"

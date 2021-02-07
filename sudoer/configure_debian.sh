@@ -5,7 +5,11 @@ if ! [[ "$PATH" == *"/sbin"* ]]; then export PATH="$PATH:/sbin"; fi
 source sudoer/configure_debian_sudo_functions.sh
 #install_vim
 #install_chrome
-apt-get --assume-yes install fcitx-googlepinyin
+#configure_python3
+#apt-get install default-jdk
+#apt-get install maven
+make_shortcut "open Terminal" gnome-terminal "<ctrl><alt>t"
+#apt-get --assume-yes install fcitx-googlepinyin
 # Resolving the bug - "Media change: please insert the disc labeled" - when using apt to install software
 # sudo sed -i '/cdrom/d' /etc/apt/sources.list
 # add_program_to_gnome_main_menu "/usr/bin/eclipse" "/opt/eclipse/java-neon/eclipse/icon.xpm" "Eclipse Neon"   
