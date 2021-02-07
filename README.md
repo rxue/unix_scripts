@@ -1,3 +1,7 @@
+# Execution Instruction
+## Execute in this `linux-scripting` Directory
+
+
 # Bash
 [Bash Beginners Guide](http://www.tldp.org/LDP/Bash-Beginners-Guide/Bash-Beginners-Guide.pdf)
 

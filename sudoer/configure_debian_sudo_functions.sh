@@ -11,58 +11,42 @@ set hlsearch
 set expandtab
 set shiftwidth=2
 set softtabstop=2
-# Imitate NerdTree: https://shapeshed.com/vim-netrw/
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
 EOF`
   echo "${config_statements}" |tee /etc/vim/vimrc.local
-
 }
 
-function install_python3 {
+# Install Google Chrome browser
+function install_chrome {
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  dpkg -i google-chrome-stable_current_amd64.deb
+  if [ $? -ne 0 ]; then
+    # Reference: man 8 apt-get
+    apt-get --asume-yes install -f
+  fi
+  dpkg -i google-chrome-stable_current_amd64.deb
+  rm google-chrome-stable_current_amd64.deb
+}
+
+function configure_python3 {
   apt-get install python3-pip
   # venv is a subset of virtualenv, so use virtualenv. Reference: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe
   pip3 virtualenv
 }
 
-function configure_git {
-  git config --global user.email "ruixue.fi@gmail.com"
-  git config --global user.name "Rui Xue"
-  # display colours for example on git status or git diff commands
-  git config --global --add color.ui true
-  # set vim as the default editor of git
-  git config --global core.editor "vim"
-  ssh-keygen -t ed25519 -C "ruixue.fi@gmail.com"
-}
 # Install Java 8 from openjdk along with its source code, which is a cool study material for 
 #   learning advance Java stuff, e.g. design patterns and principles etc.
 # Reference: https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
-function install_openjdk8 {
-  #Remove existing openjdk
-  apt-get remove openjdk-*
-  local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
-  if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
-    echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
-  fi
-  apt-get update
-  apt-get install openjdk-8-jdk openjdk-8-source
-}
-# Install sbt for Scala development
-# Reference: http://www.scala-sbt.org/1.0/docs/Installing-sbt-on-Linux.html
-function install_sbt {
-  sudo apt-get install apt-transport-https
-  echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
-  sudo apt-get update
-  sudo apt-get install sbt
-}
+#function install_openjdk8 {
+#  #Remove existing openjdk
+#  apt-get remove openjdk-*
+#  local _deb_dist_component_str="deb http://ftp.de.debian.org/debian jessie-backports main"
+#  if [ -z "`grep "${_deb_dist_component_str}" /etc/apt/sources.list`" ]; then 
+#    echo "${_deb_dist_component_str}" >> /etc/apt/sources.list 
+#  fi
+#  apt-get update
+#  apt-get install openjdk-8-jdk openjdk-8-source
+#}
+
 # Install maven (default maven version is 3.3.9)
 # FAQ: 
 # * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
@@ -134,15 +118,6 @@ function install_eclipse_installer {
   ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
   add_program_to_gnome_main_menu /opt/eclipse/eclipse /opt/eclipse/icon.xpm "Eclipse-Neon"
 }
-# Install Maria-DB
-# Refer to https://downloads.mariadb.org/mariadb/repositories/#mirror=netinch&distro=Debian&distro_release=jessie--jessie&version=10.1 
-function install_mariadb {
-  sudo apt-get install software-properties-common
-  sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
-  sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.netinch.com/pub/mariadb/repo/10.1/debian jessie main'
-  sudo apt-get update
-  sudo apt-get install mariadb-server
-}
 
 function install_postfix {
   debconf-set-selections <<< "postfix postfix/mailname string example.com"
@@ -154,17 +129,6 @@ function install_postfix {
 function install_system_monitors {
   apt-get install strace
   apt-get install htop
-}
-#### Home
-# Install Chrome
-function install_chrome {
-  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  dpkg -i google-chrome-stable_current_amd64.deb
-  if [ $? -ne 0 ]; then
-    apt-get install -f
-  fi
-  dpkg -i google-chrome-stable_current_amd64.deb
-  rm google-chrome-stable_current_amd64.deb
 }
 
 # Add ibus Chinese input method
