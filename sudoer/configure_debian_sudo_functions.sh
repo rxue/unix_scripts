@@ -36,22 +36,22 @@ function configure_python3 {
 # * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
 
 # Make a keyboard shortcut to open the terminal
-# @param $1 - custom name e.g. 'open Terminal' 
+# @param $1 - custom name e.g. 'Open Terminal' 
 # @param $2 - command e.g. gnome-terminal
 # @param $3 - shortcut keys e.g. "<Primary><alt>t" (Primary is ctrl)
 function make_shortcut {
   custom_name=$(echo "${1}" |sed 's/ //g')
   new_keybinding="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom_name}/"
-  existing_keybindings_val=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings |sed 's/^@as //')
-  new_keybinding_val="'${new_keybinding}'"
-  custom_keybindings=$(python -c 'list='"${existing_keybindings_val}"'; list.append('"${new_keybinding_val}"'); print list')
-  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "${custom_keybindings}"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
-${new_keybinding} name "${1}"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
-${new_keybinding} command "${2}"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
-${new_keybinding} binding "${3}"  
+  existing_keybindings_val=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings)
+  new_custom_keybindings=$(python3 python/util.py "${existing_keybindings_val}" "${custom_name}")
+  echo ${new_keybinding_val}
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "${new_custom_keybindings}"
+#  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
+#${new_keybinding} name "${1}"
+#  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
+#${new_keybinding} command "${2}"
+#  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:\
+#${new_keybinding} binding "${3}"  
 }
 
 # Add program to GNOME Main Menu on system level 
