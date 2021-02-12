@@ -8,6 +8,7 @@ source sudoer/configure_debian_sudo_functions.sh
 #configure_python3
 #apt-get install default-jdk
 #apt-get install maven
+install_system_monitors
 #apt-get --assume-yes install fcitx-googlepinyin
 # Resolving the bug - "Media change: please insert the disc labeled" - when using apt to install software
 # sudo sed -i '/cdrom/d' /etc/apt/sources.list
