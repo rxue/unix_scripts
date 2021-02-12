@@ -2,7 +2,7 @@
 sudo apt-get update
 #In case of using Debian instead of Ubuntu, installation of Google Chrome has dependency on /sbin/ldconfig and /sbin/start-stop-daemon, so PATH should contain /sbin
 if ! [[ "$PATH" == *"/sbin"* ]]; then export PATH="$PATH:/sbin"; fi
-source sudoer/configure_debian_sudo_functions.sh
+source sudoer/configure_sudo_functions.sh
 #install_vim
 #install_chrome
 #configure_python3
@@ -16,3 +16,4 @@ install_system_monitors
 # user_1000=`getent passwd 1000 |cut -d':' -f1`
 #runuser -l ${user_1000} -c 'wget http://ftp.fau.de/eclipse/che/eclipse-che-4.0.1.zip'
 #gpasswd -a ${user_1000} docker
+add_sudoer rxue
