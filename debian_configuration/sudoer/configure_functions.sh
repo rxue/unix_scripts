@@ -2,7 +2,7 @@
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
   apt-get install vim
-  cat sudoer/templates/vimrc.local > /etc/vim/vimrc.local
+  cat sudoer/templates/vimrc.local |tee /etc/vim/vimrc.local
 }
 
 # Install Google Chrome browser
