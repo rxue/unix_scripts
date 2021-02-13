@@ -1,0 +1,8 @@
+# Reference: http://tldp.org/LDP/abs/html/here-docs.html
+# Configure VIM on the system level
+set number
+syntax on
+set hlsearch
+set expandtab
+set shiftwidth=2
+set softtabstop=2
