@@ -1,10 +1,12 @@
 #!/bin/bash
+set -x
 USER_NAME=$1
 apt-get update
 #In case of using Debian instead of Ubuntu, installation of Google Chrome has dependency on /sbin/ldconfig and /sbin/start-stop-daemon, so PATH should contain /sbin
 if ! [[ "$PATH" == *"/sbin"* ]]; then export PATH="$PATH:/sbin"; fi
 source sudoer/configure_functions.sh
-install_vim
+#install_vim
+install_eclipse
 #install_chrome
 #configure_python3
 #apt-get install default-jdk

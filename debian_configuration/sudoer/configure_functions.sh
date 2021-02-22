@@ -1,7 +1,7 @@
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
 function install_vim {
-  apt-get install vim
+  apt-get --assume-yes install vim
   cat sudoer/templates/vimrc.local |tee /etc/vim/vimrc.local
 }
 
@@ -11,7 +11,7 @@ function install_chrome {
   dpkg -i google-chrome-stable_current_amd64.deb
   if [ $? -ne 0 ]; then
     # Reference: man 8 apt-get
-    apt-get --asume-yes install -f
+    apt-get --assume-yes install -f
   fi
   dpkg -i google-chrome-stable_current_amd64.deb
   rm google-chrome-stable_current_amd64.deb
@@ -43,21 +43,17 @@ Icon=${2}
 EOF`
   echo "${_desktop_file_content}" |tee /usr/share/applications/${_desktop_file_name}.desktop
 }
-# Install Eclipse Neon
+# Install Eclipse
 # This function is calling the function add_program_to_gnome_main_menu
-function install_eclipse_installer {
-  if [ -z "$1" ]; then
-    local _installer_http_addr="https://www.eclipse.org/downloads/download.php?file=/oomph/epp/neon/R2a/eclipse-inst-linux64.tar.gz"
-  fi
-  local _actual_http_addr=$(wget --server-response --spider "${_installer_http_addr}" 2>&1 |grep "^Location:" |awk '{print $2}')
-  wget "${_actual_http_addr}"
-  tar -xvzf $(basename ${_actual_http_addr})
-  rm $(basename ${_actual_http_addr})
+function install_eclipse {
+  tar_file_name=$(python3 python/download_eclipse.py)
+  tar -xvzf ${tar_file_name}
+  rm ${tar_file_name}
   eclipse-installer/eclipse-inst
   # NB! When using the installer to install Eclipse IDE, turn off the "BUNDLE POOLS" on the upper righ corner of the installer GUI
   # Refer to http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
-  ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
-  add_program_to_gnome_main_menu /opt/eclipse/eclipse /opt/eclipse/icon.xpm "Eclipse-Neon"
+  #ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
+  #add_program_to_gnome_main_menu /opt/eclipse/eclipse /opt/eclipse/icon.xpm "Eclipse-Neon"
 }
 
 function install_postfix {
