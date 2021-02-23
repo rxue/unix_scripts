@@ -26,15 +26,18 @@ def download_eclipse_jee_package(to_dir:str=''):
   print(mirror_link_str)
   final_downloaded_html = _download_html(mirror_link_str)
   refresh_metadata_tag = _get_str(final_downloaded_html,'Refresh','><')
-  print(refresh_metadata_tag)
-#  direct_download_link = _get_str(refresh_metadata_tag,'https','=').replace('"','')
-#  file_name = direct_download_link.split('/')[-1]
-#  if len(to_dir) > 0:
-#    file_name = to_dir + "/" + file_name
-#  with requests.get(direct_download_link) as inp:
-#    with open(file_name, "wb") as outp:
-#      outp.write(inp.content) 
-#  print(file_name)
+  direct_download_link=re.search('https.*.tar.gz', refresh_metadata_tag).group(0)
+  file_name = direct_download_link.split('/')[-1]
+  if len(to_dir) > 0:
+    file_name = to_dir + "/" + file_name
+  print("Going to download from",direct_download_link)
+  with requests.get(direct_download_link,stream=True) as inp:
+    with open(file_name, "wb") as outp:
+      for chunk in inp.iter_content(chunk_size=1024):
+        if chunk:
+          outp.write(chunk)
+          outp.flush() 
+  print(file_name)
 
 if __name__ == "__main__":
   if len(sys.argv) > 1:
