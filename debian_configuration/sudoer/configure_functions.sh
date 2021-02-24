@@ -46,13 +46,14 @@ EOF`
 # Install Eclipse
 # This function is calling the function add_program_to_gnome_main_menu
 function install_eclipse {
-  tar_file_name=$(python3 python/download_eclipse.py)
-  tar -xvzf ${tar_file_name}
+  direct_download_link=$(python3 python/get_eclipse_package_direct_download_link.py)
+  wget ${direct_download_link}
+  tar_file_name=$(python3 python/utils.py get_str ${direct_download_link} ".*.tar.gz" "/")
+  tar -xvzf ${tar_file_name} -C /opt/
   rm ${tar_file_name}
-  eclipse-installer/eclipse-inst
   # NB! When using the installer to install Eclipse IDE, turn off the "BUNDLE POOLS" on the upper righ corner of the installer GUI
   # Refer to http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
-  #ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
+  ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
   #add_program_to_gnome_main_menu /opt/eclipse/eclipse /opt/eclipse/icon.xpm "Eclipse-Neon"
 }
 
