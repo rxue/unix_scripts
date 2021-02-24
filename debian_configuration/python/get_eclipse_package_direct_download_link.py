@@ -3,7 +3,7 @@ import utils
 import re
 DOWNLOAD_HOST = 'https://www.eclipse.org/downloads/'
 def _download_html(url:str)->str: 
-  headers={'user-agent':'Linux','Upgrade-Insecure-Requests':'1'}
+  headers={'user-agent':'Linux'}
   response = requests.get(url, headers=headers) 
   encoding_type = response.encoding
   return response.content.decode(encoding_type)
