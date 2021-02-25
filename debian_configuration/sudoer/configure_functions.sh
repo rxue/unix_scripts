@@ -25,36 +25,15 @@ function configure_python3 {
 # FAQ: 
 # * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
 
-# Add program to GNOME Main Menu on system level 
-# $1 - program command e.g. /usr/bin/eclipse
-# $2 - program icon absolute path e.g. /opt/eclipse/eclipse.xpm
-# $3 - program name
-function add_program_to_gnome_main_menu {
-  local _desktop_file_name="$(basename ${1})"
-  local  _program_name="${3}"
-  local _desktop_file_content=`cat <<EOF
-[Desktop Entry]
-Comment=
-Terminal=false
-Name=${_program_name}
-Exec=${1}
-Type=Application
-Icon=${2}
-EOF`
-  echo "${_desktop_file_content}" |tee /usr/share/applications/${_desktop_file_name}.desktop
-}
-# Install Eclipse
-# This function is calling the function add_program_to_gnome_main_menu
 function install_eclipse {
   direct_download_link=$(python3 python/get_eclipse_package_direct_download_link.py)
   wget ${direct_download_link}
   tar_file_name=$(python3 python/utils.py get_str ${direct_download_link} ".*.tar.gz" "/")
   tar -xvzf ${tar_file_name} -C /opt/
   rm ${tar_file_name}
-  # NB! When using the installer to install Eclipse IDE, turn off the "BUNDLE POOLS" on the upper righ corner of the installer GUI
   # Refer to http://stackoverflow.com/questions/37864572/using-different-location-for-eclipses-p2-file
   ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
-  #add_program_to_gnome_main_menu /opt/eclipse/eclipse /opt/eclipse/icon.xpm "Eclipse-Neon"
+  python3 python/add_to_gnome_main_menu.py eclipse /opt/eclipse/eclipse /opt/eclipse/icon.xpm
 }
 
 function install_postfix {

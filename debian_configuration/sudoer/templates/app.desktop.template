@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=
+Terminal=false
+Name=${program_name}
+Exec=${executable_file_path}
+Type=Application
+Icon=${icon_path}
