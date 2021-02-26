@@ -36,6 +36,15 @@ function install_eclipse {
   python3 python/add_to_gnome_main_menu.py eclipse /opt/eclipse/eclipse /opt/eclipse/icon.xpm
 }
 
+function install_intellij {
+  tar_file_name=$(ls ideaIC*.tar.gz)
+  tar -xvzf ${tar_file_name} -C /opt/
+  rm ${tar_file_name}
+  idea_dir=$(find /opt -type d -name idea-IC*)
+  ln -fs ${idea_dir}/bin/idea.sh /usr/bin/idea
+  python3 python/add_to_gnome_main_menu.py Idea ${idea_dir}/bin/idea.sh /${idea_dir}/bin/idea.png
+}
+
 function install_postfix {
   debconf-set-selections <<< "postfix postfix/mailname string example.com"
   debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"

@@ -1,5 +1,11 @@
 import sys
 import re
+import requests
+def download_html(url:str,headers=None)->str: 
+  response = requests.get(url, headers=headers) 
+  encoding_type = response.encoding
+  return response.content.decode(encoding_type)
+
 def get_str(content:str,regex:str,split_by:str,print_result=True)->str:
   for splitted in content.split(split_by):
     if re.search(regex,splitted):
