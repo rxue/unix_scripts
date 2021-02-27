@@ -37,10 +37,12 @@ function install_eclipse {
 }
 
 function install_intellij {
-  tar_file_name=$(ls ideaIC*.tar.gz)
+  direct_download_link=$(python3 python/get_idea_package_direct_download_link.py)
+  wget ${direct_download_link}
+  tar_file_name=$(ls idea*.tar.gz)
   tar -xvzf ${tar_file_name} -C /opt/
   rm ${tar_file_name}
-  idea_dir=$(find /opt -type d -name idea-IC*)
+  idea_dir=$(find /opt -type d -name idea*)
   ln -fs ${idea_dir}/bin/idea.sh /usr/bin/idea
   python3 python/add_to_gnome_main_menu.py Idea ${idea_dir}/bin/idea.sh /${idea_dir}/bin/idea.png
 }
