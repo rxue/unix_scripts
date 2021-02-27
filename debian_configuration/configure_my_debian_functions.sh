@@ -1,6 +1,6 @@
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
-function configure_user_vim {
+configure_user_vim () {
   cp /etc/vim/vimrc.local ~/.vimrc
   config_statements=`cat <<EOF
 # Imitate NerdTree: https://shapeshed.com/vim-netrw/
@@ -18,7 +18,7 @@ EOF`
 }
 # $1 - name
 # $2 - email
-function configure_git {
+configure_git () {
   local _name=$1
   local _email=$2
   git config --global user.name "${_name}"
@@ -29,4 +29,3 @@ function configure_git {
   # git config --global core.editor "vim"
   ssh-keygen -t ed25519 -C "${_email}"
 }
-
