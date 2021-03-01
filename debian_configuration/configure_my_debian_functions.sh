@@ -1,6 +1,6 @@
 # Install and configure vim
 # Reference: http://vim.wikia.com/wiki/Indenting_source_code
-configure_user_vim () {
+configure_vim () {
   cp /etc/vim/vimrc.local ~/.vimrc
   config_statements=`cat <<EOF
 # Imitate NerdTree: https://shapeshed.com/vim-netrw/
