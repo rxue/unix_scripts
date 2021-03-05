@@ -4,5 +4,6 @@ export PYTHONPATH="${SCRIPT_DIR}/../../python"
 function generate_maven {
   group_id=$1
   name=$2
-  mvn archetype:generate -DgroupId=${group_id} -DartifactId=${name} -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.0 -DinteractiveMode=false
+  mvn archetype:generate -DgroupId=${group_id} -DartifactId=${name} -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+  python3 ${SCRIPT_DIR}/python/generate_maven_pom.py ${name}
 }
