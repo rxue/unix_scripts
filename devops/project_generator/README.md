@@ -1,7 +1,5 @@
 # What
-This simple script can:
-
-* `generate_maven`: generate `maven` an empty project with the state of art dependencies, e.g. junit 5 etc.
+## `generate_maven`: generate an empty `maven` project with the state-of-art dependencies, e.g. junit 5 etc.
 
 # Pre-requisite:
 1. `cd` to whereever the project wanted to be generated
