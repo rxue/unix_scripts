@@ -47,12 +47,6 @@ install_intellij () {
   python3 python/add_to_gnome_main_menu.py Idea ${idea_dir}/bin/idea.sh /${idea_dir}/bin/idea.png
 }
 
-install_postfix () {
-  debconf-set-selections <<< "postfix postfix/mailname string example.com"
-  debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-  apt-get install -y postfix
-  sed -i "s/inet_interfaces =.*$/inet_interfaces = loopback-only/" /etc/postfix/main.cf 
-}
 
 install_system_monitors () {
   apt-get install strace
@@ -66,25 +60,50 @@ add_sudoer () {
   
 }
 
-# Add ibus Chinese input method
-install_chinese_im () {
-  if [ "${1}" = "ibus" ]; then
-    apt-get install ibus ibus-libpinyin
-    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('ibus', 'libpinyin')]"
-  elif [ "${1}" = "sogoupinyin" ]; then
-    #Set only Finnish as the input-sources
-    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
-    apt-get install fcitx fcitx-googlepinyin
-    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" \
-2>&1 | grep "^  Location" |awk '{print $2}')
-    file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
-    wget $download_address -O $file_name
-    dpkg -i $file_name
-    if [ $? -ne 0]; then
-      apt-get install -f
-      dpkg -i $file_name
-    fi
-    rm $file_name
-  fi
+# Reference: https://docs.docker.com/engine/install/debian/
+install_docker () {
+  # Set up the repository
+  apt-get update
+  sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+  # Add Docker's Official GPG key
+  curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg 
+  echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+  apt-get update
+  apt-get install docker-ce docker-ce-cli containerd.io
 }
 
+install_postfix () {
+  debconf-set-selections <<< "postfix postfix/mailname string example.com"
+  debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+  apt-get install -y postfix
+  sed -i "s/inet_interfaces =.*$/inet_interfaces = loopback-only/" /etc/postfix/main.cf 
+}
+
+# Add ibus Chinese input method
+#install_chinese_im () {
+#  if [ "${1}" = "ibus" ]; then
+#    apt-get install ibus ibus-libpinyin
+#    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('ibus', 'libpinyin')]"
+#  elif [ "${1}" = "sogoupinyin" ]; then
+#    #Set only Finnish as the input-sources
+#    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
+#    apt-get install fcitx fcitx-googlepinyin
+#    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" \
+#2>&1 | grep "^  Location" |awk '{print $2}')
+#    file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
+#    wget $download_address -O $file_name
+#    dpkg -i $file_name
+#    if [ $? -ne 0]; then
+#      apt-get install -f
+#      dpkg -i $file_name
+#    fi
+#    rm $file_name
+#  fi
+#}
