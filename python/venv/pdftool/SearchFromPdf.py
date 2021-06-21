@@ -1,17 +1,15 @@
 import sys
-from PyPDF2 import PdfFileReader
+import pdfplumber
 def searchFromFile(path:str,keyword:str) -> list:
-    with open(path, 'rb') as f:
-        pdf = PdfFileReader(f)
-        numberOfPages = pdf.getNumPages()
+    with pdfplumber.open(path) as pdf:
         result = []
-        for pageNumber in range(0, numberOfPages):
-            page = pdf.getPage(pageNumber)
-            if keyword in page.extractText():
+        for page in pdf.pages:
+            pageText = page.extract_text()
+            if pageText != None and keyword in pageText:
                 result.append(page)
         return result
 
 if __name__ == '__main__':
     resultList = searchFromFile(sys.argv[1], sys.argv[2])
     for page in resultList:
-        print(page.extractText())
+        print(page.extract_text())
