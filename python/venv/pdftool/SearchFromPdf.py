@@ -11,5 +11,6 @@ def searchFromFile(path:str,keyword:str) -> list:
 
 if __name__ == '__main__':
     resultList = searchFromFile(sys.argv[1], sys.argv[2])
+    #resultList = searchFromFile("/home/rxue/Documents/Books/Programming/refactor/WorkingEffectivelyWithLegacyCode.pdf", "test")
     for page in resultList:
-        print(page.extract_text())
+        print("page: ",page.page_number)
