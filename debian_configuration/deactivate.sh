@@ -1,1 +1,2 @@
 unset configure_vim
+unset configure_git
