@@ -17,11 +17,11 @@ install_chrome () {
   rm google-chrome-stable_current_amd64.deb
 }
 
-configure_python3 () {
-  apt-get install python3-pip
-  # venv is a subset of virtualenv, so use virtualenv. Reference: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe
-  pip3 virtualenv
-}
+# configure_python3 () {
+#  apt-get install python3-pip
+#  # venv is a subset of virtualenv, so use virtualenv. Reference: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe
+#  pip3 virtualenv
+#}
 # FAQ: 
 # * How Maven compile Java source code? Answer: Maven compile source code by finding using the - javac - command in the OS
 
@@ -53,18 +53,17 @@ install_system_monitors () {
   apt-get install htop
 }
 # $1 - user to add as sudoer 
-add_sudoer () {
-  user_name=$1
-  config_statement=$(grep '^root' /etc/sudoers)
-  [[ ! $(grep '^'${user_name} /etc/sudoers) ]] && echo ${config_statement/root/$user_name} >> /etc/sudoers
-  
-}
+#add_sudoer () {
+#  user_name=$1
+#  config_statement=$(grep '^root' /etc/sudoers)
+#  [[ ! $(grep '^'${user_name} /etc/sudoers) ]] && echo ${config_statement/root/$user_name} >> /etc/sudoers
+#  
+#}
 
 # Reference: https://docs.docker.com/engine/install/debian/
 install_docker () {
   # Set up the repository
-  apt-get update
-  sudo apt-get install \
+  apt-get install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -79,31 +78,10 @@ install_docker () {
   apt-get install docker-ce docker-ce-cli containerd.io
 }
 
+# extra
 install_postfix () {
   debconf-set-selections <<< "postfix postfix/mailname string example.com"
   debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
   apt-get install -y postfix
   sed -i "s/inet_interfaces =.*$/inet_interfaces = loopback-only/" /etc/postfix/main.cf 
 }
-
-# Add ibus Chinese input method
-#install_chinese_im () {
-#  if [ "${1}" = "ibus" ]; then
-#    apt-get install ibus ibus-libpinyin
-#    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi'), ('ibus', 'libpinyin')]"
-#  elif [ "${1}" = "sogoupinyin" ]; then
-#    #Set only Finnish as the input-sources
-#    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi')]"
-#    apt-get install fcitx fcitx-googlepinyin
-#    download_address=$(wget --server-response --spider "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" \
-#2>&1 | grep "^  Location" |awk '{print $2}')
-#    file_name=$(expr match "$download_address" '.*\(fn=.*\)' |awk -F "=" '{print $NF}')
-#    wget $download_address -O $file_name
-#    dpkg -i $file_name
-#    if [ $? -ne 0]; then
-#      apt-get install -f
-#      dpkg -i $file_name
-#    fi
-#    rm $file_name
-#  fi
-#}
