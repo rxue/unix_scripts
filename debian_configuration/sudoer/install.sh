@@ -14,8 +14,9 @@ if [ $? -eq 0 ]; then
   install_system_monitors
   apt-get --assume-yes install default-jdk
   apt-get --assume-yes install maven
-  pat-get --assume-yes python3-venv 
+  apt-get --assume-yes python3-venv 
   apt-get --assume-yes install fcitx-googlepinyin
+  snap install --classic code
 #configure_python3
 # Resolving the bug - "Media change: please insert the disc labeled" - when using apt to install software
 # sudo sed -i '/cdrom/d' /etc/apt/sources.list

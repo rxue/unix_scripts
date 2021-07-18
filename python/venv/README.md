@@ -6,3 +6,6 @@ If there is no `venv`, install it with `apt-get install python3-venv`
 2. `source <project dir>/bin/activate`
 3. If the `requirement.txt` exists, run `pip3 install -r requirement.txt`
 
+# Development Tip with VSCode
+In order to use VSCode effeciently, the **Python** extension needs to be installed: https://www.youtube.com/watch?v=W--_EOzdTHk
+
