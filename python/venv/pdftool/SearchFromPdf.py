@@ -4,6 +4,9 @@ import PyPDF4 as pypdf
 from PyPDF4.generic import NumberObject
 from PyPDF4.pdf import PageObject, PdfFileReader
 
+def test_getLogicalPageNumber0():
+    return 0
+
 def _getLogicalPageNumber(pageLabelNums:list,pageIndex:int):
     leftBound = -1
     rightBound = -1
@@ -35,6 +38,9 @@ def searchFromFile(path:str,keyword:str) -> List[PageObject]:
     numberOfPages = pdf.getNumPages()
     pageLabelNums = pdf.trailer["/Root"]["/PageLabels"]["/Nums"]
     print(pageLabelNums)
+    print(type(pageLabelNums[0]))
+    print(type(pageLabelNums[1]))
+    print(pageLabelNums[1].getObject())
     result = []
     for pageIndex in range(0,numberOfPages):
         page = pdf.getPage(pageIndex)
