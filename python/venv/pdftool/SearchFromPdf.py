@@ -7,18 +7,16 @@ from PyPDF4.pdf import PageObject, PdfFileReader
 def test_getLogicalPageNumber0():
     return 0
 
+# Reference: https://www.w3.org/TR/WCAG20-TECHS/PDF17.html
 def _getLogicalPageNumber(pageLabelNums:list,pageIndex:int):
     leftBound = -1
-    rightBound = -1
+    rightBound = pageIndex
     bothBoundsFound = False
     dicionary = None
     for pageLabelNum in pageLabelNums:
         if type(pageLabelNum) is NumberObject:
             if pageLabelNum <= pageIndex:
                 leftBound = pageLabelNum
-                if pageLabelNum == pageIndex:
-                    rightBound = pageLabelNum
-                    bothBoundsFound = True
             else:
                 rightBound = pageLabelNum
                 break
@@ -26,10 +24,12 @@ def _getLogicalPageNumber(pageLabelNums:list,pageIndex:int):
             dictionary = pageLabelNum.getObject()
             if bothBoundsFound:
                 break
-    key = dictionary.keys()
-    if '/P' in key:
-                print(dictionary['/P'])
-        
+    keys = dictionary.keys()
+    if '/P' in keys:
+        return dictionary['/P']
+    elif '/S' in keys:
+        if dictionary['/S'] == '/r':
+            return 'i'
 
 def searchFromFile(path:str,keyword:str) -> List[PageObject]:
     pdf = pypdf.PdfFileReader(open(path, "rb"))
@@ -40,7 +40,8 @@ def searchFromFile(path:str,keyword:str) -> List[PageObject]:
     print(pageLabelNums)
     print(type(pageLabelNums[0]))
     print(type(pageLabelNums[1]))
-    print(pageLabelNums[1].getObject())
+    print(pageLabelNums[2].getObject())
+    print(pageLabelNums[3].getObject())
     result = []
     for pageIndex in range(0,numberOfPages):
         page = pdf.getPage(pageIndex)
