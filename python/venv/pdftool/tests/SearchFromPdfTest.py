@@ -24,6 +24,17 @@ class TestSearchFromPdf(unittest.TestCase):
         pageLabelNum2.getObject.return_value = {'/S':'/r'}
         result = _getLogicalPageNumber([NumberObject(0), pageLabelNum, NumberObject(1), pageLabelNum2], 1)
         self.assertEqual(result, 'i')
+    
+    def test_getLogicalPageNumber_NormalNumberAfterRoman(self):
+        pageLabelNum = Mock()
+        pageLabelNum.getObject.return_value = {'/P':'Cover'}
+        pageLabelNum2 = Mock()
+        pageLabelNum2.getObject.return_value = {'/S':'/r'}
+        pageLabelNum3 = Mock()
+        pageLabelNum3.getObject.return_value = {'/S':'/D'}
+        pageLabels = [NumberObject(0), pageLabelNum, NumberObject(1), pageLabelNum2, NumberObject(23), pageLabelNum3]
+        self.assertEqual(_getLogicalPageNumber(pageLabels, 23), 1)
+        self.assertEqual(_getLogicalPageNumber(pageLabels, 24), 2)
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,6 +3,7 @@ from typing import List
 import PyPDF4 as pypdf
 from PyPDF4.generic import NumberObject
 from PyPDF4.pdf import PageObject, PdfFileReader
+from helper import intToRoman
 
 def test_getLogicalPageNumber0():
     return 0
@@ -11,7 +12,6 @@ def test_getLogicalPageNumber0():
 def _getLogicalPageNumber(pageLabelNums:list,pageIndex:int):
     leftBound = -1
     rightBound = pageIndex
-    bothBoundsFound = False
     dicionary = None
     for pageLabelNum in pageLabelNums:
         if type(pageLabelNum) is NumberObject:
@@ -22,15 +22,16 @@ def _getLogicalPageNumber(pageLabelNums:list,pageIndex:int):
                 break
         else:
             dictionary = pageLabelNum.getObject()
-            if bothBoundsFound:
+            if rightBound > pageIndex:
                 break
     keys = dictionary.keys()
     if '/P' in keys:
         return dictionary['/P']
     elif '/S' in keys:
         if dictionary['/S'] == '/r':
-            return 'i'
-
+            return intToRoman(pageIndex - leftBound + 1).lower()
+        elif dictionary['/S'] == '/D':
+            return pageIndex - leftBound + 1
 def searchFromFile(path:str,keyword:str) -> List[PageObject]:
     pdf = pypdf.PdfFileReader(open(path, "rb"))
     if pdf.isEncrypted:
@@ -42,6 +43,8 @@ def searchFromFile(path:str,keyword:str) -> List[PageObject]:
     print(type(pageLabelNums[1]))
     print(pageLabelNums[2].getObject())
     print(pageLabelNums[3].getObject())
+    print(pageLabelNums[4].getObject())
+    print(pageLabelNums[5].getObject())
     result = []
     for pageIndex in range(0,numberOfPages):
         page = pdf.getPage(pageIndex)
