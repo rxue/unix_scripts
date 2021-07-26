@@ -1,5 +1,10 @@
 import unittest
 from unittest.mock import Mock
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
+
 import SearchFromPdf
 from PyPDF4.generic import NumberObject
 from SearchFromPdf import _getLogicalPageNumber
