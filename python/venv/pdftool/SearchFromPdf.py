@@ -4,6 +4,7 @@ import PyPDF4 as pypdf
 from PyPDF4.generic import NumberObject
 from PyPDF4.pdf import PageObject, PdfFileReader
 from helper import intToRoman
+from Page import Page
 
 def test_getLogicalPageNumber0():
     return 0
@@ -32,29 +33,22 @@ def _getLogicalPageNumber(pageLabelNums:list,pageIndex:int):
             return intToRoman(pageIndex - leftBound + 1).lower()
         elif dictionary['/S'] == '/D':
             return pageIndex - leftBound + 1
-def searchFromFile(path:str,keyword:str) -> List[PageObject]:
+def searchFromFile(path:str,keyword:str) -> List[Page]:
     pdf = pypdf.PdfFileReader(open(path, "rb"))
     if pdf.isEncrypted:
         pdf.decrypt('')
     numberOfPages = pdf.getNumPages()
-    pageLabelNums = pdf.trailer["/Root"]["/PageLabels"]["/Nums"]
-    print(pageLabelNums)
-    print(type(pageLabelNums[0]))
-    print(type(pageLabelNums[1]))
-    print(pageLabelNums[2].getObject())
-    print(pageLabelNums[3].getObject())
-    print(pageLabelNums[4].getObject())
-    print(pageLabelNums[5].getObject())
+    pageLabels = pdf.trailer["/Root"]["/PageLabels"]["/Nums"]
     result = []
     for pageIndex in range(0,numberOfPages):
         page = pdf.getPage(pageIndex)
         text = page.extractText()
         if keyword in text:
-            result.append(page)
+            result.append(Page(pageLabels, pageIndex, page))
     return result
     
 if __name__ == '__main__':
     resultList = searchFromFile(sys.argv[1], sys.argv[2])
-    #for page in resultList:
-    #    print("page content:",page.extractText())
-    #    print("\n\n\n")     
+    for page in resultList:
+        print(page)
+        print("\n\n\n")     
