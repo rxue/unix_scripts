@@ -2,11 +2,13 @@ from PyPDF4.generic import NumberObject
 from helper import intToRoman
 
 class Page:
-    def __init__(self, pageLabels, pageIndex, pageObject):
+    def __init__(self, pageLabels, pageIndexWithPageCount, pageObject):
         self.__pageLabels = pageLabels
-        self.__pageIndex = pageIndex
+        self.__pageIndex = pageIndexWithPageCount[0]
+        self.__pageCount = str(pageIndexWithPageCount[1])
         self.__pageObject = pageObject
-    def __getLogicalPageNumber(self):
+    # Reference: https://www.w3.org/TR/WCAG20-TECHS/PDF17.html
+    def getLogicalPageNumber(self) -> str:
         leftBound = -1
         rightBound = self.__pageIndex
         dicionary = None
@@ -30,5 +32,8 @@ class Page:
             elif dictionary['/S'] == '/D':
                 return str(self.__pageIndex - leftBound + 1)
 
+    def __pageDescription(self):
+        return self.getLogicalPageNumber() + ' (' + str(self.__pageIndex + 1) + ' of ' + self.__pageCount + ')'
+
     def __str__(self):
-        return 'page ' + self.__getLogicalPageNumber() + ' (' + str(self.__pageIndex) + '): \n----------------------\n' + self.__pageObject.extractText()    
+        return 'Page ' + self.__pageDescription() + '\n----------------------\n' + self.__pageObject.extractText()    
