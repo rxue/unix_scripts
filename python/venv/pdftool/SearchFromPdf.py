@@ -5,8 +5,10 @@ from PyPDF4.generic import NumberObject
 from PyPDF4.pdf import PageObject, PdfFileReader
 from helper import intToRoman
 from Page import Page
+import glob
+import os
 
-def searchFromFile(path:str,keyword:str) -> List[Page]:
+def searchFromPdf(path:str,keyword:str) -> List[Page]:
     pdf = pypdf.PdfFileReader(open(path, "rb"))
     if pdf.isEncrypted:
         pdf.decrypt('')
@@ -20,8 +22,18 @@ def searchFromFile(path:str,keyword:str) -> List[Page]:
             result.append(Page(pageLabels, (pageIndex,numberOfPages), page))
     return result
     
+def searchFromDirectory(directory:str,keyword:str) -> list:
+    result = []
+    for filePath in glob.iglob(directory + '**/**', recursive=True):
+        if not os.path.isdir(filePath):
+            if filePath.endswith('.pdf'):
+                singleSearchResult = searchFromPdf(filePath,keyword)
+                if len(singleSearchResult) > 0:
+                    result.append((filePath, singleSearchResult))
+    return result
+
 if __name__ == '__main__':
-    resultList = searchFromFile(sys.argv[1], sys.argv[2])
+    resultList = searchFromDirectory(sys.argv[1], sys.argv[2])
     i = 0
     for page in resultList:
         if i < 5:
