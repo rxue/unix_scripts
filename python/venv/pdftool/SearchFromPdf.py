@@ -13,11 +13,16 @@ def searchFromPdf(path:str,keyword:str) -> List[Page]:
     if pdf.isEncrypted:
         pdf.decrypt('')
     numberOfPages = pdf.getNumPages()
-    pageLabels = pdf.trailer["/Root"]["/PageLabels"]["/Nums"]
+    pageLabels = None
+    try:
+        pageLabels = pdf.trailer["/Root"]["/PageLabels"]["/Nums"]
+    except KeyError as e:
+        print('KeyError in argument', e.args)
     result = []
     for pageIndex in range(0,numberOfPages):
         page = pdf.getPage(pageIndex)
         text = page.extractText()
+        print("DEBUG::",text)
         if keyword in text:
             result.append(Page(pageLabels, (pageIndex,numberOfPages), page))
     return result
@@ -33,7 +38,7 @@ def searchFromDirectory(directory:str,keyword:str) -> list:
     return result
 
 if __name__ == '__main__':
-    resultList = searchFromDirectory(sys.argv[1], sys.argv[2])
+    resultList = searchFromPdf(sys.argv[1], sys.argv[2])
     i = 0
     for page in resultList:
         if i < 5:

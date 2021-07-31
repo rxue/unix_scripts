@@ -7,10 +7,14 @@ sys.path.append(parentdir)
 
 from Page import Page 
 from PyPDF4.generic import NumberObject
-from SearchFromPdf import _getLogicalPageNumber
 
 #https://www.youtube.com/watch?v=6tNS--WetLI&t=468s
 class TestPage(unittest.TestCase):
+    def testGetLogicalPageNumber_None(self):
+        page = Page(None, (0,100), Mock())
+        result = page.getLogicalPageNumber()
+        self.assertEqual(result, None)
+
     def testGetLogicalPageNumber(self):
         pageLabelNum = Mock()
         pageLabelNum.getObject.return_value = {'/P':'Cover'}

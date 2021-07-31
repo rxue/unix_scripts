@@ -9,6 +9,8 @@ class Page:
         self.__pageObject = pageObject
     # Reference: https://www.w3.org/TR/WCAG20-TECHS/PDF17.html
     def getLogicalPageNumber(self) -> str:
+        if self.__pageLabels is None:
+            return None
         leftBound = -1
         rightBound = self.__pageIndex
         dicionary = None
@@ -33,7 +35,10 @@ class Page:
                 return str(self.__pageIndex - leftBound + 1)
 
     def __pageDescription(self):
-        return self.getLogicalPageNumber() + ' (' + str(self.__pageIndex + 1) + ' of ' + self.__pageCount + ')'
+        result = ' (' + str(self.__pageIndex + 1) + ' of ' + self.__pageCount + ')'
+        if not self.getLogicalPageNumber() is None:
+            result = self.getLogicalPageNumber() + result
+        return result
 
     def __str__(self):
         return 'Page ' + self.__pageDescription() + '\n----------------------\n' + self.__pageObject.extractText()    
