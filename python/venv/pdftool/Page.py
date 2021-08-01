@@ -2,11 +2,11 @@ from PyPDF4.generic import NumberObject
 from helper import intToRoman
 
 class Page:
-    def __init__(self, pageLabels, pageIndexWithPageCount, pageObject):
+    def __init__(self, pageLabels, pageIndexWithPageCount, pageText):
         self.__pageLabels = pageLabels
         self.__pageIndex = pageIndexWithPageCount[0]
         self.__pageCount = str(pageIndexWithPageCount[1])
-        self.__pageObject = pageObject
+        self.__pageText = pageText
     # Reference: https://www.w3.org/TR/WCAG20-TECHS/PDF17.html
     def getLogicalPageNumber(self) -> str:
         if self.__pageLabels is None:
@@ -35,10 +35,10 @@ class Page:
                 return str(self.__pageIndex - leftBound + 1)
 
     def __pageDescription(self):
-        result = ' (' + str(self.__pageIndex + 1) + ' of ' + self.__pageCount + ')'
+        result = str(self.__pageIndex + 1) + ' of ' + self.__pageCount
         if not self.getLogicalPageNumber() is None:
-            result = self.getLogicalPageNumber() + result
+            result = self.getLogicalPageNumber() + ' (' + result + ')'
         return result
 
     def __str__(self):
-        return 'Page ' + self.__pageDescription() + '\n----------------------\n' + self.__pageObject.extractText()    
+        return 'Page ' + self.__pageDescription() + '\n----------------------\n' + self.__pageText    

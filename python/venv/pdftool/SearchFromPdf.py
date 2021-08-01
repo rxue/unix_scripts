@@ -1,15 +1,16 @@
 import sys
 from typing import List
 import PyPDF4 as pypdf
-from PyPDF4.generic import NumberObject
 from PyPDF4.pdf import PageObject, PdfFileReader
+from pdfminer import high_level
 from helper import intToRoman
+from PdfMinerClient import searchFromPdfWithPdfMiner
 from Page import Page
 import glob
 import os
 
-def searchFromPdf(path:str,keyword:str) -> List[Page]:
-    pdf = pypdf.PdfFileReader(open(path, "rb"))
+def searchFromPdf(filePath:str,keyword:str) -> List[Page]:
+    pdf = pypdf.PdfFileReader(open(filePath, "rb"))
     if pdf.isEncrypted:
         pdf.decrypt('')
     numberOfPages = pdf.getNumPages()
@@ -19,12 +20,9 @@ def searchFromPdf(path:str,keyword:str) -> List[Page]:
     except KeyError as e:
         print('KeyError in argument', e.args)
     result = []
-    for pageIndex in range(0,numberOfPages):
-        page = pdf.getPage(pageIndex)
-        text = page.extractText()
-        print("DEBUG::",text)
-        if keyword in text:
-            result.append(Page(pageLabels, (pageIndex,numberOfPages), page))
+    pageIndexWithPageTextList = searchFromPdfWithPdfMiner(filePath, keyword)
+    for pageIndexWithPageText in pageIndexWithPageTextList:
+        result.append(Page(pageLabels, (pageIndexWithPageText[0],numberOfPages), pageIndexWithPageText[1]))
     return result
     
 def searchFromDirectory(directory:str,keyword:str) -> list:
