@@ -2,11 +2,12 @@ from PyPDF4.generic import NumberObject
 from helper import intToRoman
 
 class Page:
-    def __init__(self, pageLabels, pageIndexWithPageCount, pageText):
+    def __init__(self, pageLabels, pageIndexWithPageCount:str, pageText:str,occurrences:int):
         self.__pageLabels = pageLabels
         self.__pageIndex = pageIndexWithPageCount[0]
         self.__pageCount = str(pageIndexWithPageCount[1])
         self.__pageText = pageText
+        self.__occurrences = occurrences
     # Reference: https://www.w3.org/TR/WCAG20-TECHS/PDF17.html
     def getLogicalPageNumber(self) -> str:
         if self.__pageLabels is None:
@@ -40,5 +41,9 @@ class Page:
             result = self.getLogicalPageNumber() + ' (' + result + ')'
         return result
 
+    @property
+    def occurrences(self):
+        return self.__occurrences
+
     def __str__(self):
-        return 'Page ' + self.__pageDescription() + '\n----------------------\n' + self.__pageText    
+        return 'Page ' + self.__pageDescription() + ' with ' + str(self.occurrences) + ' occurrence(s)\n----------------------\n' + self.__pageText    

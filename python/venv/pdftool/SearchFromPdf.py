@@ -22,7 +22,8 @@ def searchFromPdf(filePath:str,keyword:str) -> List[Page]:
     result = []
     pageIndexWithPageTextList = searchFromPdfWithPdfMiner(filePath, keyword)
     for pageIndexWithPageText in pageIndexWithPageTextList:
-        result.append(Page(pageLabels, (pageIndexWithPageText[0],numberOfPages), pageIndexWithPageText[1]))
+        occurrences = pageIndexWithPageText[1].lower().count(keyword.lower())
+        result.append(Page(pageLabels, (pageIndexWithPageText[0],numberOfPages), pageIndexWithPageText[1], occurrences))
     return result
     
 def searchFromDirectory(directory:str,keyword:str) -> list:
