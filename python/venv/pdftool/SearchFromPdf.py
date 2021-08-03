@@ -37,10 +37,9 @@ def searchFromDirectory(directory:str,keyword:str) -> list:
     return result
 
 if __name__ == '__main__':
-    resultList = searchFromPdf(sys.argv[1], sys.argv[2])
-    i = 0
-    for page in resultList:
-        if i < 5:
-            print(page)
-            print("\n\n\n")     
-        i = i + 1
+    path = sys.argv[1]
+    if os.path.isdir(path):
+        resultList = searchFromDirectory(path, sys.argv[2])
+    for filePath, pageList in resultList:
+        occurrences = sum(page.occurrences for page in pageList)
+        print(filePath, "has", occurrences, "occurrences")
