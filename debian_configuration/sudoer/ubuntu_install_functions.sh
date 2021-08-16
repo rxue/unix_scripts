@@ -21,6 +21,9 @@ install_docker() {
   #  Update the apt package index, and install the latest version of Docker Engine and containerd, or go to the next step to install a specific version:
   apt-get update
   apt-get install docker-ce docker-ce-cli containerd.io
+  # Install docker-compose https://docs.docker.com/compose/install/
+  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
   usermod -a -G docker $docker_user
   echo "NOTE! reboot needed"
 }
