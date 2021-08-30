@@ -1,7 +1,6 @@
 import re
 
-
-def replace(from_file:str, to_file:str, replacement_dict:dict):
+def replace_and_write_to(from_file:str, to_file:str, replacement_dict:dict):
   def _read()->str:
     result = []
     with open(from_file) as inp:
@@ -22,3 +21,6 @@ def replace(from_file:str, to_file:str, replacement_dict:dict):
   with open(to_file, 'w') as outp:
     for line in input:
       outp.write(_replace_regex(line))
+
+def replace(file:str, replacement_dict:dict):
+    replace_and_write_to(file, file, replacement_dict)
