@@ -1,6 +1,6 @@
 # Generate a clean maven project with Java 8, JUnit 5
 SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
-export PYTHONPATH="${SCRIPT_DIR}/../../python"
+export PYTHONPATH="./${SCRIPT_DIR}/../../python"
 function generate_maven {
   group_id=$1
   name=$2
