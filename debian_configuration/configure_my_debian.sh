@@ -6,3 +6,6 @@ python3 python/make_shortcut.py "Open Chrome" "google-chrome" "<Super>c"
 source configure_my_debian_functions.sh
 configure_git rui ruixue.fi@gmail.com
 source deactivate.sh
+#reference: https://sdkman.io/install
+curl -s "https://get.sdkman.io" | bash
+sdk install gradle
