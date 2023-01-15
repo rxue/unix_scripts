@@ -77,6 +77,14 @@ install_docker () {
   apt-get update
   apt-get install docker-ce docker-ce-cli containerd.io
 }
+# Reference: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+install_aws_cli () {
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  ./aws/install
+  rm awscliv2.zip
+  rm -f aws
+}
 
 # extra
 install_postfix () {
@@ -85,3 +93,4 @@ install_postfix () {
   apt-get install -y postfix
   sed -i "s/inet_interfaces =.*$/inet_interfaces = loopback-only/" /etc/postfix/main.cf 
 }
+
