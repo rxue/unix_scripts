@@ -61,18 +61,31 @@ install_eclipse () {
   ln -fs /opt/eclipse/eclipse /usr/bin/eclipse
   python3 python/add_to_gnome_main_menu.py eclipse /opt/eclipse/eclipse /opt/eclipse/icon.xpm
 }
-
-install_intellij () {
-  direct_download_link=$(python3 python/get_idea_package_direct_download_link.py)
-  wget ${direct_download_link}
-  tar_file_name=$(ls idea*.tar.gz)
-  tar -xvzf ${tar_file_name} -C /opt/
-  rm ${tar_file_name}
-  idea_dir=$(find /opt -type d -name idea*)
-  ln -fs ${idea_dir}/bin/idea.sh /usr/bin/idea
-  python3 python/add_to_gnome_main_menu.py Idea ${idea_dir}/bin/idea.sh /${idea_dir}/bin/idea.png
+_add_to_gnome_main_menu () {
+  local app_name=$1
+  local desktop_file=/usr/share/applications/${app_name}.desktop
+  cp templates/app.desktop.template $desktop_file
+  sed -i "s/#{app_name}/"${app_name}"/g" $desktop_file
+  sed -i "s%#{executable_file_path}%"${2}"%g" $desktop_file
+  sed -i "s%#{icon_path}%"${3}"%g" $desktop_file
 }
-
+_download_intellij_idea () {
+  local option=${1}
+  binary_file_name=`curl -s https://www.jetbrains.com/intellij-repository/releases |grep ideaIC.zip --max-count 1 |grep -oP 'ideaIC-.*-sources.jar"' |sed 's/-sources.jar"//g'`
+  tar_file_name=${binary_file_name}.tar.gz
+  direct_download_link=https://download.jetbrains.com/idea/${tar_file_name}
+  echo "Download IntelliJ Idea from link: "${direct_download_link}
+  wget $direct_download_link
+  intellij_dir=/opt/intellij
+  mkdir $intellij_dir
+  tar ${option} -xvzf $tar_file_name -C ${intellij_dir}/
+}
+install_intellij_idea () {
+  _download_intellij_idea --remove-files
+  local idea_bin_dir=/opt/intellij/$(sudo tar -xzvf ideaIC-2023.3.tar.gz -C /opt/intellij/ |head -n 1)bin
+  ln -fs ${idea_bin_dir}/idea.sh /usr/bin/intellij.idea
+  _add_to_gnome_main_menu intellij.idea ${idea_bin_dir}/idea.sh ${idea_bin_dir}/idea.png
+}
 
 install_system_monitors () {
   apt-get install strace
