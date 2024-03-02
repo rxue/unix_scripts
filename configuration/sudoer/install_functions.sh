@@ -10,21 +10,32 @@ _basename_without_extension () {
   fi
   echo ${result}
 }
-_extract_software_2 () {
+_extract_tar_2 () {
   local download_link=${1}
-  target_dir=${2}
+  local target_dir=${2}
   wget ${download_link}
-  local tar_file_name=`basename ${download_link}`
-  tar -xvzf ${tar_file_name} -C ${target_dir}
-  rm ${tar_file_name}
+  local tar_file_name=`basename $download_link`
+  local tar_options=${3}
+  tar -$tar_options $tar_file_name -C $target_dir
+  rm $tar_file_name
 }
 
 install_maven () {
   local download_link=https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz
-  _extract_software_2 ${download_link} /opt/
+  _extract_tar_2 ${download_link} /opt/ xvzf
   local extracted_package_name=`_basename_without_extension ${download_link}`
   ln -fs /opt/${extracted_package_name%-bin}/bin/mvn /usr/local/bin/mvn
 
+}
+install_nodejs () {
+  install_2_dir=/opt/nodejs
+  mkdir $install_2_dir
+  local download_link=https://nodejs.org/dist/v21.6.2/node-v21.6.2-linux-x64.tar.xz
+  _extract_tar_2 ${download_link} $install_2_dir xvf
+  local extracted_package_name=`_basename_without_extension ${download_link}`
+  ln -fs ${install_2_dir}/${extracted_package_name}/bin/node /usr/local/bin/node
+  ln -fs ${install_2_dir}/${extracted_package_name}/bin/npm /usr/local/bin/npm
+  ln -fs ${install_2_dir}/${extracted_package_name}/bin/npx /usr/local/bin/npx
 }
 install_vim () {
   apt-get --assume-yes install vim
